@@ -13,6 +13,20 @@
       "type": "string"
     }
   },
+    "options": {
+        "relations": {
+            "comments": {
+                "type": "hasMany",
+                "model": "Listing_Comments",
+                "foreignKey": "listing_Id"
+            },
+            "ips": {
+                "type": "hasMany",
+                "model": "Listing_IP",
+                "foreignKey": "listing_Id"
+            }
+        }
+    },
   "validations": [],
   "relations": {},
   "acls": [],

@@ -7,6 +7,15 @@
           "required": true
       }
   },
+    "options": {
+        "relations": {
+            "listing": {
+                "type": "belongsTo",
+                "model": "Listing",
+                "foreignKey": "listing_Id"
+            }
+        }
+    } ,
   "validations": [],
   "relations": {},
   "acls": [],
