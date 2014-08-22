@@ -2,5 +2,14 @@
   "db": {
     "name": "db",
     "connector": "memory"
+  },
+  "t2spare": {
+    "host": "localhost",
+    "port": 3306,
+    "database": "t2spare",
+    "username": "root",
+    "password": "",
+    "name": "t2spare",
+    "connector": "mysql"
   }
 }
