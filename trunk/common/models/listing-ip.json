@@ -1,0 +1,13 @@
+{
+  "name": "Listing_IP",
+  "base": "PersistedModel",
+  "properties": {
+      "test":{
+          "type": "string"
+      }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
