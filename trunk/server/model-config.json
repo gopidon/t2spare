@@ -25,6 +25,10 @@
     "public": false
   },
   "Listing": {
+    "dataSource": "t2spare",
+    "public": true
+  },
+  "Listing_Comments": {
         "dataSource": "t2spare",
         "public": true
   }
