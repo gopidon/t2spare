@@ -1,0 +1,14 @@
+{
+  "name": "Listing_Comments",
+  "base": "PersistedModel",
+  "properties": {
+      "comments": {
+          "type": "string",
+          "required": true
+      }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
