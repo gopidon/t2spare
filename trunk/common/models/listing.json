@@ -1,0 +1,21 @@
+{
+  "name": "listing",
+  "base": "PersistedModel",
+  "properties": {
+    "desc": {
+      "type": "string",
+      "required": true
+    },
+    "location": {
+      "type": "string"
+    },
+    "contact": {
+       "type": "string",
+       "required": false
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
