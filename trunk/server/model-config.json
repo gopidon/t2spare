@@ -9,19 +9,19 @@
     "dataSource": "t2spare"
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "t2spare",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "t2spare",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "t2spare",
     "public": false
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "t2spare",
     "public": false
   },
   "Listing": {
