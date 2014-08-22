@@ -1,5 +1,5 @@
 {
-  "name": "listing",
+  "name": "Listing",
   "base": "PersistedModel",
   "properties": {
     "desc": {
@@ -10,8 +10,7 @@
       "type": "string"
     },
     "contact": {
-       "type": "string",
-       "required": false
+       "type": "string"
     }
   },
   "validations": [],

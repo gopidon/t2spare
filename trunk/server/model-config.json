@@ -23,5 +23,9 @@
   "Role": {
     "dataSource": "db",
     "public": false
+  },
+  "Listing": {
+        "dataSource": "t2spare",
+        "public": true
   }
 }
