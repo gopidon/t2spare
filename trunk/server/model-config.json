@@ -28,12 +28,12 @@
     "dataSource": "t2spare",
     "public": true
   },
-  "Listing_Comments": {
+  "ListingComment": {
     "dataSource": "t2spare",
     "public": true
   },
-  "Listing_IP": {
-        "dataSource": "t2spare",
-        "public": true
+  "ListingIntParty": {
+    "dataSource": "t2spare",
+    "public": true
   }
 }

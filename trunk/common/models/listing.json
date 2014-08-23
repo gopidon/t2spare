@@ -1,6 +1,20 @@
 {
   "name": "Listing",
   "base": "PersistedModel",
+  "options": {
+    "relations": {
+      "comments": {
+        "type": "hasMany",
+        "model": "ListingComment",
+        "foreignKey": "listing_Id"
+      },
+      "intParties": {
+        "type": "hasMany",
+        "model": "ListingIntParty",
+        "foreignKey": "listing_Id"
+      }
+    }
+  },
   "properties": {
     "desc": {
       "type": "string",
@@ -13,20 +27,6 @@
       "type": "string"
     }
   },
-    "options": {
-        "relations": {
-            "comments": {
-                "type": "hasMany",
-                "model": "Listing_Comments",
-                "foreignKey": "listing_Id"
-            },
-            "ips": {
-                "type": "hasMany",
-                "model": "Listing_IP",
-                "foreignKey": "listing_Id"
-            }
-        }
-    },
   "validations": [],
   "relations": {},
   "acls": [],
