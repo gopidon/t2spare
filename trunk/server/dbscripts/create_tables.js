@@ -5,8 +5,8 @@ var app = require('../server');
 var Q = require('q');
 var dataSource = app.dataSources.t2spare;
 var Listing = app.models.Listing;
-var Listing_Comments = app.models.Listing_Comments;
-var Listing_IP = app.models.Listing_IP;
+var ListingComment = app.models.ListingComment;
+var ListingIntParty = app.models.ListingIntParty;
 var User = app.models.User;
 var AccessToken = app.models.AccessToken;
 
@@ -54,29 +54,29 @@ function createListingTable(){
     return deferred.promise;
 };
 
-function createListingCommentsTable(){
+function createListingCommentTable(){
     var deferred = Q.defer();
-    dataSource.automigrate('Listing_Comments', function(err){
+    dataSource.automigrate('ListingComment', function(err){
         if(err){
             deferred.reject(err);
         }
         else{
-            console.log("CREATED table Listing_Comments");
-            deferred.resolve("CREATED table Listing_Comments");
+            console.log("CREATED table ListingComment");
+            deferred.resolve("CREATED table ListingComment");
         }
     });
     return deferred.promise;
 }
 
-function createListingIPTable(){
+function createListingIntPartyTable(){
     var deferred = Q.defer();
-    dataSource.automigrate('Listing_IP', function(err){
+    dataSource.automigrate('ListingIntParty', function(err){
         if(err){
             deferred.reject(err);
         }
         else{
-            console.log("CREATED table Listing_IP");
-            deferred.resolve("CREATED table Listing_IP");
+            console.log("CREATED table ListingIntParty");
+            deferred.resolve("CREATED table ListingIntParty");
         }
     });
     return deferred.promise;
@@ -92,16 +92,17 @@ createAccessTokenTable()
         return createListingTable();
     })
     .then(function(data){
-        return createListingCommentsTable();
+        return createListingCommentTable();
     })
     .then(function(data){
-        return createListingIPTable();
+        return createListingIntPartyTable();
     })
     .done(function(){
         console.log("**********All tables successfully created*************");
         dataSource.disconnect();
     }, function(err){
         console.log("Error occured while creating tables .... : "+err);
+        dataSource.disconnect();
     });
 
 
