@@ -8,6 +8,14 @@
   "User": {
     "dataSource": "t2spare"
   },
+  "UserIdentity": {
+    "dataSource": "t2spare",
+    "public": true
+  },
+    "UserCredential": {
+        "dataSource": "t2spare",
+        "public": true
+    },
   "AccessToken": {
     "dataSource": "t2spare",
     "public": false

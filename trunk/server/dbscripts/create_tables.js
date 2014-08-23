@@ -8,6 +8,8 @@ var Listing = app.models.Listing;
 var ListingComment = app.models.ListingComment;
 var ListingIntParty = app.models.ListingIntParty;
 var User = app.models.User;
+var UserIdentity = app.models.UserIdentity;
+var UserCredential = app.models.UserCredential;
 var AccessToken = app.models.AccessToken;
 
 
@@ -34,6 +36,48 @@ function createUserTable(){
         else{
             console.log("CREATED table User");
             deferred.resolve("CREATED table User");
+        }
+    });
+    return deferred.promise;
+};
+
+function createUserIdentityTable(){
+    var deferred = Q.defer();
+    dataSource.automigrate('UserIdentity', function(err){
+        if(err){
+            deferred.reject(err);
+        }
+        else{
+            console.log("CREATED table UserIdentity");
+            deferred.resolve("CREATED table UserIdentity");
+        }
+    });
+    return deferred.promise;
+};
+
+function createUserIdentityTable(){
+    var deferred = Q.defer();
+    dataSource.automigrate('UserIdentity', function(err){
+        if(err){
+            deferred.reject(err);
+        }
+        else{
+            console.log("CREATED table UserIdentity");
+            deferred.resolve("CREATED table UserIdentity");
+        }
+    });
+    return deferred.promise;
+};
+
+function createUserCredentialTable(){
+    var deferred = Q.defer();
+    dataSource.automigrate('UserCredential', function(err){
+        if(err){
+            deferred.reject(err);
+        }
+        else{
+            console.log("CREATED table UserCredential");
+            deferred.resolve("CREATED table UserCredential");
         }
     });
     return deferred.promise;
@@ -84,9 +128,15 @@ function createListingIntPartyTable(){
 
 
 console.log("*********Get ready! Creating TABLES***********");
-createAccessTokenTable()
+createUserTable()
     .then(function(data){
-        return createUserTable();
+        return createUserIdentityTable();
+    })
+    .then(function(data){
+        return createUserCredentialTable();
+    })
+    .then(function(data){
+        return createAccessTokenTable();
     })
     .then(function(data){
         return createListingTable();
