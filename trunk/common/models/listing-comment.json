@@ -1,0 +1,23 @@
+{
+  "name": "ListingComment",
+  "base": "PersistedModel",
+  "options": {
+    "relations": {
+      "listing": {
+        "type": "belongsTo",
+        "model": "Listing",
+        "foreignKey": "listing_Id"
+      }
+    }
+  },
+  "properties": {
+    "comment": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
