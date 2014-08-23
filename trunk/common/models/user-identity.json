@@ -1,42 +1,14 @@
 {
-  "name": "UserIdentity",
-  "base": "PersistedModel",
-  "properties": {
-    "provider": {
-      "type": "string",
-      "required": true
+    "name": "userIdentity",
+    "options": {
+        "base": "UserIdentity",
+        "relations": {
+            "user": {
+                "model": "User",
+                "type": "belongsTo",
+                "foreignKey": "userId"
+            }
+        }
     },
-      "authScheme": {
-          "type": "string",
-          "required": true
-      },
-      "externalId": {
-          "type": "string",
-          "required": true
-      },
-      "profile": {
-          "type": "object",
-          "required": true
-      },
-      "credentials": {
-          "type": "object",
-          "required": true
-      },
-      "userId": {
-          "type": "number",
-          "required": true
-      },
-      "created": {
-          "type": "date",
-          "required": true
-      },
-      "modified": {
-          "type": "date",
-          "required": true
-      }
-  },
-  "validations": [],
-  "relations": {},
-  "acls": [],
-  "methods": []
+    "public": true
 }

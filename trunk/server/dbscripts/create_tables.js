@@ -8,7 +8,7 @@ var Listing = app.models.Listing;
 var ListingComment = app.models.ListingComment;
 var ListingIntParty = app.models.ListingIntParty;
 var User = app.models.User;
-var UserIdentity = app.models.UserIdentity;
+var userIdentity = app.models.userIdentity;
 var UserCredential = app.models.UserCredential;
 var AccessToken = app.models.AccessToken;
 
@@ -42,23 +42,11 @@ function createUserTable(){
 };
 
 function createUserIdentityTable(){
+    console.log("About to create UI table");
     var deferred = Q.defer();
-    dataSource.automigrate('UserIdentity', function(err){
+    dataSource.automigrate('userIdentity', function(err){
         if(err){
-            deferred.reject(err);
-        }
-        else{
-            console.log("CREATED table UserIdentity");
-            deferred.resolve("CREATED table UserIdentity");
-        }
-    });
-    return deferred.promise;
-};
-
-function createUserIdentityTable(){
-    var deferred = Q.defer();
-    dataSource.automigrate('UserIdentity', function(err){
-        if(err){
+            console.log("Error:"+err);
             deferred.reject(err);
         }
         else{

@@ -8,7 +8,7 @@
   "User": {
     "dataSource": "t2spare"
   },
-  "UserIdentity": {
+  "userIdentity": {
     "dataSource": "t2spare",
     "public": true
   },
