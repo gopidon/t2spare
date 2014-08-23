@@ -64,12 +64,6 @@ app.use(loopback.urlNotFound());
 // The ultimate error handler.
 app.use(loopback.errorHandler());
 
-var swaggerRemote = app.remotes().exports.swagger;
-if (swaggerRemote) {
-    swaggerRemote.requireToken = false;
-}
-
-app.enableAuth();
 
 app.start = function() {
   // start the web server
