@@ -6,12 +6,12 @@
       "comments": {
         "type": "hasMany",
         "model": "ListingComment",
-        "foreignKey": "listing_Id"
+        "foreignKey": "listingId"
       },
       "intParties": {
         "type": "hasMany",
         "model": "ListingIntParty",
-        "foreignKey": "listing_Id"
+        "foreignKey": "listingId"
       }
     }
   },
