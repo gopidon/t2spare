@@ -12,7 +12,7 @@
     "dataSource": "t2spare",
     "public": true
   },
-    "UserCredential": {
+    "userCredential": {
         "dataSource": "t2spare",
         "public": true
     },

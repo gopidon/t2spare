@@ -14,6 +14,11 @@ app.use(loopback.favicon());
 app.use(loopback.compress());
 
 // -- Add your pre-processing middleware here --
+app.use(loopback.cookieParser('246bace2-38cb-4138-85d9-0ae8160b07c8'));
+app.use(loopback.token({model: app.models.AccessToken}));
+app.use(loopback.bodyParser());
+app.use(loopback.methodOverride());
+app.use(loopback.session({ secret: 'keyboard cat' }));
 
 // boot scripts mount components like REST API
 boot(app, __dirname);
@@ -30,7 +35,7 @@ passportConfigurator.init();
 passportConfigurator.setupModels({
     userModel: app.models.User,
     userIdentityModel: app.models.userIdentity,
-    userCredentialModel: app.models.UserCredential
+    userCredentialModel: app.models.userCredential
 });
 
 for(var s in config) {
@@ -42,7 +47,7 @@ for(var s in config) {
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 app.get('/auth/account', function(req, res, next) {
-    console.log("User:"+req.user);
+    console.log("User:"+JSON.stringify(req.user));
     //res.redirect('http://localhost:63342/strongloop/t2spare/trunk/client/www/index.html#/tab/dash');
     res.redirect('https://www.facebook.com/connect/login_success.html');
 });
@@ -64,6 +69,13 @@ app.use(loopback.urlNotFound());
 
 // The ultimate error handler.
 app.use(loopback.errorHandler());
+
+var swaggerRemote = app.remotes().exports.swagger;
+if (swaggerRemote) {
+    swaggerRemote.requireToken = false;
+}
+
+app.enableAuth();
 
 
 app.start = function() {

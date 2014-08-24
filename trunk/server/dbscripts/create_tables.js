@@ -9,7 +9,7 @@ var ListingComment = app.models.ListingComment;
 var ListingIntParty = app.models.ListingIntParty;
 var User = app.models.User;
 var userIdentity = app.models.userIdentity;
-var UserCredential = app.models.UserCredential;
+var UserCredential = app.models.userCredential;
 var AccessToken = app.models.AccessToken;
 
 
@@ -59,7 +59,7 @@ function createUserIdentityTable(){
 
 function createUserCredentialTable(){
     var deferred = Q.defer();
-    dataSource.automigrate('UserCredential', function(err){
+    dataSource.automigrate('userCredential', function(err){
         if(err){
             deferred.reject(err);
         }
