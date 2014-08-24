@@ -1,1 +1,4 @@
 trunk/node_modules
+trunk/client/hooks
+trunk/client/platforms
+trunk/client/plugins
