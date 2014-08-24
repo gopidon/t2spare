@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('t2spare', ['ionic', 't2spare.controllers', 't2spare.services'])
+angular.module('t2spare', ['ionic', 't2spare.controllers', 't2spare.services','t2spare.values'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

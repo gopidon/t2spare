@@ -1,7 +1,8 @@
 angular.module('t2spare.controllers', [])
 
-.controller('DashCtrl', function($scope) {
-})
+.controller('DashCtrl', ['$scope','URLConstants',function($scope, URLConstants) {
+        $scope.FBAuthURL = URLConstants.FBAuthURL;
+}])
 
 .controller('FriendsCtrl', function($scope, Friends) {
   $scope.friends = Friends.all();
