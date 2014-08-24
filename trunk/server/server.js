@@ -42,7 +42,7 @@ for(var s in config) {
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 app.get('/auth/account', function(req, res, next) {
-    console.log("HEERRRRRRRRRRRRRRREEE1");
+    console.log("User:"+req.user);
     //res.redirect('http://localhost:63342/strongloop/t2spare/trunk/client/www/index.html#/tab/dash');
     res.redirect('https://www.facebook.com/connect/login_success.html');
 });
