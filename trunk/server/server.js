@@ -20,6 +20,9 @@ app.use(loopback.bodyParser());
 app.use(loopback.methodOverride());
 app.use(loopback.session({ secret: 'keyboard cat' }));
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 // boot scripts mount components like REST API
 boot(app, __dirname);
 
@@ -46,11 +49,24 @@ for(var s in config) {
 
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
-app.get('/auth/account', function(req, res, next) {
+/*app.get(/^\/auth\/(\w+)(?:\.\.(\w+))?$/, function(req, res, next) {
+    console.log("Heeeeeereee");
     console.log("User:"+JSON.stringify(req.user));
     //res.redirect('http://localhost:63342/strongloop/t2spare/trunk/client/www/index.html#/tab/dash');
-    res.redirect('https://www.facebook.com/connect/login_success.html');
+    res.render('loginSuccess',{user: req.user});
+    //res.send("authenticated!");
+});*/
+
+app.get('/auth/loginSuccess', function(req, res, next) {
+    console.log("Heeeere222");
+    //console.log("User:"+JSON.stringify(req.user));
+    //res.redirect('http://localhost:63342/strongloop/t2spare/trunk/client/www/index.html#/tab/dash');
+    //res.render('loginSuccess',{user: req.user});
+    //res.redirect('?userId='+req.user.id);
+    res.redirect("https://www.facebook.com/connect/blank.html?userId="+req.user.id);
 });
+
+
 
 
 app.use(loopback.static(path.join(__dirname, 'public')));
