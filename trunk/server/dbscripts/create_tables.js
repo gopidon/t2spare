@@ -27,6 +27,20 @@ function createAccessTokenTable(){
     return deferred.promise;
 };
 
+function createACLTable(){
+    var deferred = Q.defer();
+    dataSource.automigrate('ACL', function(err){
+        if(err){
+            deferred.reject(err);
+        }
+        else{
+            console.log("CREATED table ACL");
+            deferred.resolve("CREATED table ACL");
+        }
+    });
+    return deferred.promise;
+};
+
 function createUserTable(){
     var deferred = Q.defer();
     dataSource.automigrate('User', function(err){
@@ -42,7 +56,6 @@ function createUserTable(){
 };
 
 function createUserIdentityTable(){
-    console.log("About to create UI table");
     var deferred = Q.defer();
     dataSource.automigrate('userIdentity', function(err){
         if(err){
@@ -117,6 +130,9 @@ function createListingIntPartyTable(){
 
 console.log("*********Get ready! Creating TABLES***********");
 createUserTable()
+    .then(function(data){
+        return createACLTable();
+    })
     .then(function(data){
         return createUserIdentityTable();
     })
