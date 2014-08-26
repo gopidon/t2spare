@@ -2,24 +2,24 @@
   "name": "user",
   "base": "User",
   "options": {
-        "relations": {
-            "accessTokens": {
-                "model": "AccessToken",
-                "type": "hasMany",
-                "foreignKey": "userId"
-            },
-            "identities": {
-                "model": "userIdentity",
-                "type": "hasMany",
-                "foreignKey": "userId"
-            },
-            "credentials": {
-                "model": "userCredential",
-                "type": "hasMany",
-                "foreignKey": "userId"
-            }
-        }
-   },
+    "relations": {
+      "accessTokens": {
+        "model": "accessToken",
+        "type": "hasMany",
+        "foreignKey": "userId"
+      },
+      "identities": {
+        "model": "userIdentity",
+        "type": "hasMany",
+        "foreignKey": "userId"
+      },
+      "credentials": {
+        "model": "userCredential",
+        "type": "hasMany",
+        "foreignKey": "userId"
+      }
+    }
+  },
   "properties": {},
   "validations": [],
   "relations": {},

@@ -14,22 +14,22 @@
     "public": true
   },
   "userCredential": {
-     "dataSource": "t2spare",
-     "public": true
+    "dataSource": "t2spare",
+    "public": true
   },
-  "AccessToken": {
+  "accessToken": {
     "dataSource": "t2spare",
     "public": false
   },
-  "ACL": {
+  "acl": {
+    "dataSource": "t2spare",
+    "public": true
+  },
+  "roleMapping": {
     "dataSource": "t2spare",
     "public": false
   },
-  "RoleMapping": {
-    "dataSource": "t2spare",
-    "public": false
-  },
-  "Role": {
+  "role": {
     "dataSource": "t2spare",
     "public": false
   },

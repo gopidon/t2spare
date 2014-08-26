@@ -7,21 +7,21 @@ var dataSource = app.dataSources.t2spare;
 var Listing = app.models.Listing;
 var ListingComment = app.models.ListingComment;
 var ListingIntParty = app.models.ListingIntParty;
-var User = app.models.User;
+var User = app.models.user;
 var userIdentity = app.models.userIdentity;
 var UserCredential = app.models.userCredential;
-var AccessToken = app.models.AccessToken;
+var AccessToken = app.models.accessToken;
 
 
 function createAccessTokenTable(){
     var deferred = Q.defer();
-    dataSource.automigrate('AccessToken', function(err){
+    dataSource.automigrate('accessToken', function(err){
         if(err){
             deferred.reject(err);
         }
         else{
-            console.log("CREATED table AccessToken");
-            deferred.resolve("CREATED table AccessToken");
+            console.log("CREATED table accessToken");
+            deferred.resolve("CREATED table accessToken");
         }
     });
     return deferred.promise;
@@ -29,13 +29,41 @@ function createAccessTokenTable(){
 
 function createACLTable(){
     var deferred = Q.defer();
-    dataSource.automigrate('ACL', function(err){
+    dataSource.automigrate('acl', function(err){
         if(err){
             deferred.reject(err);
         }
         else{
-            console.log("CREATED table ACL");
-            deferred.resolve("CREATED table ACL");
+            console.log("CREATED table acl");
+            deferred.resolve("CREATED table acl");
+        }
+    });
+    return deferred.promise;
+};
+
+function createRoleMappingTable(){
+    var deferred = Q.defer();
+    dataSource.automigrate('roleMapping', function(err){
+        if(err){
+            deferred.reject(err);
+        }
+        else{
+            console.log("CREATED table roleMapping");
+            deferred.resolve("CREATED table roleMapping");
+        }
+    });
+    return deferred.promise;
+};
+
+function createRoleTable(){
+    var deferred = Q.defer();
+    dataSource.automigrate('role', function(err){
+        if(err){
+            deferred.reject(err);
+        }
+        else{
+            console.log("CREATED table role");
+            deferred.resolve("CREATED table role");
         }
     });
     return deferred.promise;
@@ -130,6 +158,12 @@ function createListingIntPartyTable(){
 
 console.log("*********Get ready! Creating TABLES***********");
 createUserTable()
+    .then(function(data){
+        return createRoleMappingTable();
+    })
+    .then(function(data){
+        return createRoleTable();
+    })
     .then(function(data){
         return createACLTable();
     })
