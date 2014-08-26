@@ -1,8 +1,9 @@
 <ion-view title="Dashboard">
   <ion-content class="has-header padding">
     <h1>Dash</h1>
-      <button ng-click="openFB()" class="button button-block button-positive">
+      <button ng-hide="getAuthenticated()" ng-click="openFB()" class="button button-block button-positive">
           Login with Facebook
       </button>
+      hello {{getAuthenticated()}}
   </ion-content>
 </ion-view>
