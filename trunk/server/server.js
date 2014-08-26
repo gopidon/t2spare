@@ -58,12 +58,14 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 });*/
 
 app.get('/auth/loginSuccess', function(req, res, next) {
-    console.log("Heeeere222");
+    console.log("In auth/loginSuccess");
+    var access_token = req.signedCookies.access_token;
+    console.log("Access Token:"+access_token);
     //console.log("User:"+JSON.stringify(req.user));
     //res.redirect('http://localhost:63342/strongloop/t2spare/trunk/client/www/index.html#/tab/dash');
     //res.render('loginSuccess',{user: req.user});
     //res.redirect('?userId='+req.user.id);
-    res.redirect("https://www.facebook.com/connect/blank.html?userId="+req.user.id);
+    res.redirect("https://www.facebook.com/connect/blank.html?userId="+req.user.id+'&accessToken='+access_token);
 });
 
 
