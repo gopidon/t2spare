@@ -4,7 +4,7 @@
   "options": {
     "relations": {
       "accessTokens": {
-        "model": "accessToken",
+        "model": "AccessToken",
         "type": "hasMany",
         "foreignKey": "userId"
       },

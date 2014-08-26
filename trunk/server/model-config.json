@@ -17,9 +17,9 @@
     "dataSource": "t2spare",
     "public": true
   },
-  "accessToken": {
+  "AccessToken": {
     "dataSource": "t2spare",
-    "public": false
+    "public": true
   },
   "acl": {
     "dataSource": "t2spare",

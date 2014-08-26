@@ -10,19 +10,19 @@ var ListingIntParty = app.models.ListingIntParty;
 var User = app.models.user;
 var userIdentity = app.models.userIdentity;
 var UserCredential = app.models.userCredential;
-var AccessToken = app.models.accessToken;
+var AccessToken = app.models.AccessToken;
 var Role = app.models.role;
 
 
 function createAccessTokenTable(){
     var deferred = Q.defer();
-    dataSource.automigrate('accessToken', function(err){
+    dataSource.automigrate('AccessToken', function(err){
         if(err){
             deferred.reject(err);
         }
         else{
-            console.log("CREATED table accessToken");
-            deferred.resolve("CREATED table accessToken");
+            console.log("CREATED table AccessToken");
+            deferred.resolve("CREATED table AccessToken");
         }
     });
     return deferred.promise;
