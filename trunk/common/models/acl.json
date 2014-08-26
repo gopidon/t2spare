@@ -1,0 +1,9 @@
+{
+  "name": "acl",
+  "base": "ACL",
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
