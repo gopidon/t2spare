@@ -1,14 +1,19 @@
 {
-    "name": "userIdentity",
-    "options": {
-        "base": "UserIdentity",
-        "relations": {
-            "user": {
-                "model": "User",
-                "type": "belongsTo",
-                "foreignKey": "userId"
-            }
-        }
-    },
-    "public": true
+  "name": "userIdentity",
+  "base": "UserIdentity",
+  "options": {
+    "base": "UserIdentity",
+    "relations": {
+      "user": {
+        "model": "user",
+        "type": "belongsTo",
+        "foreignKey": "userId"
+      }
+    }
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
 }

@@ -43,13 +43,13 @@ function createACLTable(){
 
 function createUserTable(){
     var deferred = Q.defer();
-    dataSource.automigrate('User', function(err){
+    dataSource.automigrate('user', function(err){
         if(err){
             deferred.reject(err);
         }
         else{
-            console.log("CREATED table User");
-            deferred.resolve("CREATED table User");
+            console.log("CREATED table user");
+            deferred.resolve("CREATED table user");
         }
     });
     return deferred.promise;
@@ -63,8 +63,8 @@ function createUserIdentityTable(){
             deferred.reject(err);
         }
         else{
-            console.log("CREATED table UserIdentity");
-            deferred.resolve("CREATED table UserIdentity");
+            console.log("CREATED table userIdentity");
+            deferred.resolve("CREATED table userIdentity");
         }
     });
     return deferred.promise;
@@ -77,8 +77,8 @@ function createUserCredentialTable(){
             deferred.reject(err);
         }
         else{
-            console.log("CREATED table UserCredential");
-            deferred.resolve("CREATED table UserCredential");
+            console.log("CREATED table userCredential");
+            deferred.resolve("CREATED table userCredential");
         }
     });
     return deferred.promise;

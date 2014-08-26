@@ -5,17 +5,18 @@
       "./models"
     ]
   },
-  "User": {
-    "dataSource": "t2spare"
+  "user": {
+    "dataSource": "t2spare",
+    "public": true
   },
   "userIdentity": {
     "dataSource": "t2spare",
     "public": true
   },
-    "userCredential": {
-        "dataSource": "t2spare",
-        "public": true
-    },
+  "userCredential": {
+     "dataSource": "t2spare",
+     "public": true
+  },
   "AccessToken": {
     "dataSource": "t2spare",
     "public": false
