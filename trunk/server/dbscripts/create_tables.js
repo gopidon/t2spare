@@ -11,6 +11,7 @@ var User = app.models.user;
 var userIdentity = app.models.userIdentity;
 var UserCredential = app.models.userCredential;
 var AccessToken = app.models.accessToken;
+var Role = app.models.role;
 
 
 function createAccessTokenTable(){
@@ -62,8 +63,14 @@ function createRoleTable(){
             deferred.reject(err);
         }
         else{
-            console.log("CREATED table role");
-            deferred.resolve("CREATED table role");
+            Role.create({name: 'ADMIN', description: 'admin role'}, function (err, role) {
+                Role.create({name: 'AUTH', description: 'authorised role'}, function (err, role) {
+                    Role.create({name: 'ANON', description: 'anonymous role'}, function (err, role) {
+                        console.log("CREATED table role with default entries");
+                        deferred.resolve("CREATED table role");
+                    });
+                });
+            });
         }
     });
     return deferred.promise;
