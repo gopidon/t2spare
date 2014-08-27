@@ -26,16 +26,26 @@
     <script src="js/services.js"></script>
     <script src="js/lb-services.js"></script>
     <script src="js/values.js"></script>
-    <!-- <script src="http://192.168.2.80:8080/target/target-script-min.js#anonymous"></script>-->
+    <script src="http://192.168.2.80:8080/target/target-script-min.js#anonymous"></script>
   </head>
   <body ng-app="t2spare" animation="slide-left-right-ios7">
     <!-- 
       The nav bar that will be updated as we navigate between views.
     -->
     <ion-nav-bar class="bar-stable nav-title-slide-ios7">
-      <ion-nav-back-button class="button-icon icon  ion-ios7-arrow-back">
-        Back
-      </ion-nav-back-button>
+        <ion-nav-buttons side="left">
+            <ion-nav-back-button class="button-clear">
+                <i class="ion-chevron-left"></i>
+            </ion-nav-back-button>
+        </ion-nav-buttons>
+
+        <ion-nav-buttons side="right">
+            <button class="button button-icon" ng-click="addListing()">
+                <i class="icon ion-plus"></i>
+            </button>
+        </ion-nav-buttons>
+
+
     </ion-nav-bar>
     <!-- 
       The views will be rendered in the <ion-nav-view> directive below
