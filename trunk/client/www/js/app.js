@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2spare.values'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,7 +19,8 @@ angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2sp
       StatusBar.styleDefault();
     }
   });
-})
+
+    })
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -33,7 +34,8 @@ angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2sp
     .state('tab', {
       url: "/tab",
       abstract: true,
-      templateUrl: "templates/tabs.html"
+      templateUrl: "templates/tabs.html",
+      controller: 'HomeCtrl'
     })
 
     // Each tab has its own nav history stack:
@@ -42,8 +44,7 @@ angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2sp
       url: '/home',
       views: {
         'tab-home': {
-          templateUrl: 'templates/tab-home.html',
-          controller: 'HomeCtrl'
+          templateUrl: 'templates/tab-home.html'
         }
       }
     })
