@@ -1,9 +1,16 @@
 <ion-view title="Home">
   <ion-content class="has-header padding">
-    <h1>Dash</h1>
-      <button ng-hide="getAuthenticated()" ng-click="openFB()" class="button button-block button-positive">
-          Login with Facebook
-      </button>
-      hello {{getAuthenticated()}}
+      <div class="list list-inset">
+          <label class="item item-input">
+              <i class="icon ion-search placeholder-icon"></i>
+              <input type="text" placeholder="Search" ng-model="search.searchKey" ng-change="searchByKey()">
+          </label>
+      </div>
+      <ion-list>
+          <ion-item ng-repeat="listing in topListings">
+              {{listing.description}}
+          </ion-item>
+      </ion-list>
+      {{hello}}
   </ion-content>
 </ion-view>
