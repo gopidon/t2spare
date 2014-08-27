@@ -1,6 +1,6 @@
 angular.module('t2spare.controllers', ['lbServices'])
 
-.controller('DashCtrl', ['$scope','URLConstants','$window','$location','User','$http','$rootScope', 'Global','LocalStorage',function($scope, URLConstants, $window, $location, User, $http, $rootScope, Global, LocalStorage) {
+.controller('HomeCtrl', ['$scope','URLConstants','$window','$location','User','$http','$rootScope', 'Global','LocalStorage',function($scope, URLConstants, $window, $location, User, $http, $rootScope, Global, LocalStorage) {
         $scope.global = Global;
         $scope.getAuthenticated = function(){
             return LocalStorage.get("authenticated", false);
@@ -47,15 +47,14 @@ angular.module('t2spare.controllers', ['lbServices'])
         }
 }])
 
-.controller('FriendsCtrl', function($scope, Friends) {
+.controller('MyListingsCtrl', function($scope, Friends) {
   $scope.friends = Friends.all();
 })
 
-.controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
+.controller('MyListingDetailDetailCtrl', function($scope, $stateParams, Friends) {
   $scope.friend = Friends.get($stateParams.friendId);
-})
-
-.controller('AccountCtrl', function($scope) {
 });
+
+
 
 //curl -X GET -H "Authorization: 887RdUdAjdpGlydXY1rHhdfQcYVqlD7YttpIwoE2baJywLff2bPmi27Wmv1NNkvw" http://localhost:3000/api/Users/1
