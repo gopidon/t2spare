@@ -17,46 +17,9 @@
           </ion-item>
       </ion-list>
 
+
   </ion-content>
 </ion-view>
-<script id="new-listing.html" type="text/ng-template">
 
-    <ion-modal-view>
-
-        <!-- Modal header bar -->
-        <ion-header-bar class="bar-secondary">
-            <h1 class="title">Add New Listing</h1>
-            <button class="button button-clear button-positive" ng-click="closeListing()">Cancel</button>
-        </ion-header-bar>
-
-        <!-- Modal content area -->
-        <ion-content>
-
-            <form ng-submit="createListing(listing)">
-                <div class="list">
-                    <label class="item item-input">
-                        <textarea placeholder="Describe your listing" ng-model="listing.descr"></textarea>
-                    </label>
-                </div>
-                <div class="list">
-                    <label class="item item-input">
-                        <input type="text" placeholder="Start typing your location" ng-model="listing.location">
-                    </label>
-                </div>
-                <div class="list">
-                    <label class="item item-input">
-                        <input type="text" placeholder="Enter contact information" ng-model="listing.contact">
-                    </label>
-                </div>
-                <div class="padding">
-                    <button type="submit" class="button button-block button-positive">Create Listing</button>
-                </div>
-            </form>
-
-        </ion-content>
-
-    </ion-modal-view>
-
-</script>
 
 

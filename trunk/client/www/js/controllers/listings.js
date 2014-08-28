@@ -6,17 +6,17 @@ angular.module('t2spare.listings',[])
 
         $scope.topListings = [];
         $scope.listingModal = null;
+        $scope.search = {};
 
-        Listing.find({}).$promise.then(function(data){
+        Listing.find({filter:{order: 'id desc'}}).$promise.then(function(data){
            $scope.topListings = data;
         });
 
-        // Create Listing modal
-        /*$ionicModal.fromTemplateUrl('new-listing.html', function(modal) {
-            $scope.listingModal = modal;
-        }, {
-            scope: $scope
-        });*/
+        $scope.searchByKey = function(){
+            Listing.find({filter:{where : {descr: {like: '%'+$scope.search.searchKey+'%'}}}}).$promise.then(function(data){
+                $scope.topListings = data;
+            });
+        }
 
         $ionicModal.fromTemplateUrl('new-listing.html', {
             scope: $scope,
@@ -41,7 +41,7 @@ angular.module('t2spare.listings',[])
 
             Listing.create(listing).$promise.then(function(data){
                 $log.debug("Created new listing:"+JSON.stringify(data));
-                $scope.topListings.push(data);
+                $scope.topListings.unshift(data);
             });
             $scope.listingModal.hide();
         }
