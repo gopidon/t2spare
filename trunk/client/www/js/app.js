@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2spare.values','lbServices'])
+angular.module('t2spare', ['ionic', 't2spare.system', 't2spare.listings','t2spare.values','lbServices'])
 
 .run(function($ionicPlatform,$rootScope) {
   $ionicPlatform.ready(function() {
@@ -38,6 +38,16 @@ angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2sp
       abstract: true,
       templateUrl: "templates/tabs.html"
     })
+
+    .state('tab.login', {
+          url: '/login',
+          views: {
+              'tab-home': {
+                  templateUrl: 'templates/tab-login.html',
+                  controller: 'HomeCtrl'
+              }
+          }
+     })
 
     // Each tab has its own nav history stack:
 
