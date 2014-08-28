@@ -16,7 +16,7 @@
     }
   },
   "properties": {
-    "desc": {
+    "descr": {
       "type": "string",
       "required": true
     },

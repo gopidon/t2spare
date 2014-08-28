@@ -2,8 +2,13 @@
  * Created by gopi on 8/27/14.
  */
 angular.module('t2spare.listings',[])
-.controller('HomeCtrl',['$scope','$log','$ionicModal','Listing', function($scope, $log, $ionicModal, Listing){
+.controller('HomeCtrl',['$scope','$log','$ionicModal','$timeout','Listing', function($scope, $log, $ionicModal,$timeout, Listing){
 
+        $scope.topListings = [];
+
+        Listing.find({filter: {where : {id:1}}}).$promise.then(function(data){
+           $scope.topListings = data;
+        });
 
         // Create Listing modal
         $ionicModal.fromTemplateUrl('new-listing.html', function(modal) {
@@ -24,6 +29,9 @@ angular.module('t2spare.listings',[])
         $scope.createListing = function(listing){
             Listing.create(listing, function(data){
                 $log.debug("Created new listing:"+JSON.stringify(data));
+                $scope.topListings.push(data);
+                $log.debug(JSON.stringify($scope.topListings));
+
             });
             $scope.listingModal.hide();
         }
