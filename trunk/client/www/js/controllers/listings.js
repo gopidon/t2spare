@@ -8,12 +8,12 @@ angular.module('t2spare.listings',[])
         $scope.listingModal = null;
         $scope.search = {};
 
-        Listing.find({filter:{order: 'id desc'}}).$promise.then(function(data){
+        Listing.find({filter:{order: 'id desc', limit: 10}}).$promise.then(function(data){
            $scope.topListings = data;
         });
 
         $scope.searchByKey = function(){
-            Listing.find({filter:{where : {descr: {like: '%'+$scope.search.searchKey+'%'}}}}).$promise.then(function(data){
+            Listing.find({filter:{where : {descr: {like: '%'+$scope.search.searchKey+'%'}}, order: 'id desc', limit: 10}}).$promise.then(function(data){
                 $scope.topListings = data;
             });
         }
