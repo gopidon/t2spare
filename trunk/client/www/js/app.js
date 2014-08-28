@@ -36,8 +36,7 @@ angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2sp
     .state('tab', {
       url: "/tab",
       abstract: true,
-      templateUrl: "templates/tabs.html",
-      controller: 'HomeCtrl'
+      templateUrl: "templates/tabs.html"
     })
 
     // Each tab has its own nav history stack:
@@ -46,7 +45,8 @@ angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2sp
       url: '/home',
       views: {
         'tab-home': {
-          templateUrl: 'templates/tab-home.html'
+          templateUrl: 'templates/tab-home.html',
+          controller: 'HomeCtrl'
         }
       }
     })
