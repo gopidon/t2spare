@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2spare.values'])
+angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2spare.values','lbServices'])
 
 .run(function($ionicPlatform,$rootScope) {
   $ionicPlatform.ready(function() {
@@ -22,7 +22,9 @@ angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2sp
 
     })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(['$stateProvider','$urlRouterProvider','$logProvider',function($stateProvider, $urlRouterProvider, $logProvider) {
+
+  $logProvider.debugEnabled(true);
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -73,5 +75,5 @@ angular.module('t2spare', ['ionic', 't2spare.listings', 't2spare.services','t2sp
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');
 
-});
+}]);
 

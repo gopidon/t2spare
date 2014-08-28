@@ -2,7 +2,7 @@
  * Created by gopi on 8/27/14.
  */
 angular.module('t2spare.listings',[])
-.controller('HomeCtrl',['$scope','$ionicModal', function($scope, $ionicModal){
+.controller('HomeCtrl',['$scope','$log','$ionicModal','Listing', function($scope, $log, $ionicModal, Listing){
 
 
         // Create Listing modal
@@ -20,6 +20,13 @@ angular.module('t2spare.listings',[])
         $scope.closeListing = function() {
             $scope.listingModal.hide();
         };
+
+        $scope.createListing = function(listing){
+            Listing.create(listing, function(data){
+                $log.debug("Created new listing:"+JSON.stringify(data));
+            });
+            $scope.listingModal.hide();
+        }
 
 
 
