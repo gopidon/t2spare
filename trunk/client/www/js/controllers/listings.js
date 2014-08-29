@@ -2,7 +2,7 @@
  * Created by gopi on 8/27/14.
  */
 angular.module('t2spare.listings',[])
-.controller('HomeCtrl',['$window','$rootScope','$scope','$state','$log','$ionicModal','$timeout','URLConstants','Listing','LocalStorage', function($window, $rootScope, $scope, $state, $log, $ionicModal,$timeout, URLConstants, Listing, LocalStorage){
+.controller('HomeCtrl',['$window','$rootScope','$scope','$state','$log','$ionicModal','$ionicSideMenuDelegate','$timeout','URLConstants','Listing','LocalStorage', function($window, $rootScope, $scope, $state, $log, $ionicModal,$ionicSideMenuDelegate, $timeout, URLConstants, Listing, LocalStorage){
 
         var loginWindow, close, hasUserId, userId, accessToken, userStr, accessTokenStr;
         $scope.URLConstants = URLConstants;
@@ -12,6 +12,9 @@ angular.module('t2spare.listings',[])
         $scope.listingModal = null;
         $scope.search = {};
 
+        $scope.toggleSideMenu = function() {
+            $ionicSideMenuDelegate.toggleLeft();
+        };
 
         $scope.getUserId = function(){
             var userId = LocalStorage.get("USERID");

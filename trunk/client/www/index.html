@@ -12,116 +12,134 @@
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
-    <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
 
-
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
-
-    <!-- your app's js -->
-    <script src="js/app.js"></script>
-    <script src="js/controllers/listings.js"></script>
-    <script src="js/services/util.js"></script>
-    <script src="js/lb-services.js"></script>
-    <script src="js/values.js"></script>
     <!-- <script src="http://192.168.2.80:8080/target/target-script-min.js#anonymous"></script> -->
   </head>
   <body ng-app="t2spare" ng-controller="HomeCtrl" animation="slide-left-right-ios7">
-    <!-- 
-      The nav bar that will be updated as we navigate between views.
-    -->
-    <ion-nav-bar class="bar-positive nav-title-slide-ios7">
-        <ion-nav-buttons side="left">
-            <ion-nav-back-button class="button-clear">
-                <i class="ion-chevron-left"></i>
-            </ion-nav-back-button>
-        </ion-nav-buttons>
-    </ion-nav-bar>
-    <!-- 
-      The views will be rendered in the <ion-nav-view> directive below
-      Templates are in the /templates folder (but you could also
-      have templates inline in this html file if you'd like)
-    -->
-    <ion-nav-view>
+        <ion-side-menus>
+              <!-- Left menu -->
+              <ion-side-menu side="left">
+                  <ion-header-bar class="bar-positive">
+                      <h1 class="title">Menu</h1>
+                  </ion-header-bar>
+                  <ion-content scroll="false">
+                      <ion-list>
+                        <ion-item>1</ion-item>
+                      </ion-list>
+                  </ion-content>
+              </ion-side-menu>
 
-        <!-- Modals -->
-        <script id="new-listing.html" type="text/ng-template">
+              <!-- Center Content -->
+              <ion-side-menu-content>
 
-            <ion-modal-view>
+                    <ion-nav-bar class="bar-positive nav-title-slide-ios7">
+                        <ion-nav-buttons side="left">
+                            <ion-nav-back-button class="button-clear">
+                                <i class="ion-chevron-left"></i>
+                            </ion-nav-back-button>
+                            <button class="button button-icon" ng-click="toggleSideMenu()">
+                                <i class="icon ion-navicon"></i>
+                            </button>
+                        </ion-nav-buttons>
+                    </ion-nav-bar>
+                    <!--
+                      The views will be rendered in the <ion-nav-view> directive below
+                      Templates are in the /templates folder (but you could also
+                      have templates inline in this html file if you'd like)
+                    -->
+                    <ion-nav-view>
 
-                <!-- Modal header bar -->
-                <ion-header-bar class="bar-secondary">
-                    <h1 class="title">Add New Listing</h1>
-                    <button class="button button-clear button-positive" ng-click="closeListingModal()">Cancel</button>
-                </ion-header-bar>
+                        <!-- Modals -->
+                        <script id="new-listing.html" type="text/ng-template">
 
-                <!-- Modal content area -->
-                <ion-content>
+                            <ion-modal-view>
 
-                    <form ng-submit="createListing(listing)">
-                        <div class="list">
-                            <label class="item item-input">
-                                <textarea placeholder="Describe your listing" ng-model="listing.descr"></textarea>
-                            </label>
-                        </div>
-                        <div class="list">
-                            <label class="item item-input">
-                                <input type="text" placeholder="Start typing your location" ng-model="listing.location">
-                            </label>
-                        </div>
-                        <div class="list">
-                            <label class="item item-input">
-                                <input type="text" placeholder="Enter contact information" ng-model="listing.contact">
-                            </label>
-                        </div>
-                        <div class="padding">
-                            <button type="submit" class="button button-block button-positive">Create Listing</button>
-                        </div>
-                    </form>
+                                <!-- Modal header bar -->
+                                <ion-header-bar class="bar-secondary">
+                                    <h1 class="title">Add New Listing</h1>
+                                    <button class="button button-clear button-positive" ng-click="closeListingModal()">Cancel</button>
+                                </ion-header-bar>
 
-                </ion-content>
+                                <!-- Modal content area -->
+                                <ion-content>
 
-            </ion-modal-view>
+                                    <form ng-submit="createListing(listing)">
+                                        <div class="list">
+                                            <label class="item item-input">
+                                                <textarea placeholder="Describe your listing" ng-model="listing.descr"></textarea>
+                                            </label>
+                                        </div>
+                                        <div class="list">
+                                            <label class="item item-input">
+                                                <input type="text" placeholder="Start typing your location" ng-model="listing.location">
+                                            </label>
+                                        </div>
+                                        <div class="list">
+                                            <label class="item item-input">
+                                                <input type="text" placeholder="Enter contact information" ng-model="listing.contact">
+                                            </label>
+                                        </div>
+                                        <div class="padding">
+                                            <button type="submit" class="button button-block button-positive">Create Listing</button>
+                                        </div>
+                                    </form>
 
-        </script>
+                                </ion-content>
+
+                            </ion-modal-view>
+
+                        </script>
 
 
-        <!-- Login modal -->
-        <script id="login.html" type="text/ng-template">
+                        <!-- Login modal -->
+                        <script id="login.html" type="text/ng-template">
 
-            <ion-modal-view>
+                            <ion-modal-view>
 
-                <!-- Modal header bar -->
-                <ion-header-bar class="bar-secondary">
-                    <h1 class="title">Login</h1>
-                    <button class="button button-clear button-positive" ng-click="closeLoginModal()">Cancel</button>
-                </ion-header-bar>
+                                <!-- Modal header bar -->
+                                <ion-header-bar class="bar-secondary">
+                                    <h1 class="title">Login</h1>
+                                    <button class="button button-clear button-positive" ng-click="closeLoginModal()">Cancel</button>
+                                </ion-header-bar>
 
-                <!-- Modal content area -->
-                <ion-content class="padding">
+                                <!-- Modal content area -->
+                                <ion-content class="padding">
 
-                    <button class="button button-block button-positive" ng-click="authFB()">
-                        <i class="ion-social-facebook"></i>
-                        Facebook
-                    </button>
-                    <button class="button button-block button-positive">
-                        <i class="ion-social-google"></i>
-                        Google
-                    </button>
-                    <button class="button button-block button-positive">
-                        <i class="ion-social-twitter"></i>
-                        Twitter
-                    </button>
+                                    <button class="button button-block button-positive" ng-click="authFB()">
+                                        <i class="ion-social-facebook"></i>
+                                        Facebook
+                                    </button>
+                                    <button class="button button-block button-positive">
+                                        <i class="ion-social-google"></i>
+                                        Google
+                                    </button>
+                                    <button class="button button-block button-positive">
+                                        <i class="ion-social-twitter"></i>
+                                        Twitter
+                                    </button>
 
-                </ion-content>
+                                </ion-content>
 
-            </ion-modal-view>
+                            </ion-modal-view>
 
-        </script>
+                        </script>
 
-    </ion-nav-view>
+                    </ion-nav-view>
+              </ion-side-menu-content>
+         </ion-side-menus>
+        <!-- ionic/angularjs js -->
+        <script src="lib/ionic/js/ionic.bundle.js"></script>
+        <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
 
+
+        <!-- cordova script (this will be a 404 during development) -->
+        <script src="cordova.js"></script>
+
+        <!-- your app's js -->
+        <script src="js/app.js"></script>
+        <script src="js/controllers/listings.js"></script>
+        <script src="js/services/util.js"></script>
+        <script src="js/lb-services.js"></script>
+        <script src="js/values.js"></script>
   </body>
 </html>
