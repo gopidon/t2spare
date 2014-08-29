@@ -12,6 +12,11 @@
         "type": "hasMany",
         "model": "ListingIntParty",
         "foreignKey": "listingId"
+      },
+      "user": {
+        "type": "belongsTo",
+        "model": "user",
+        "foreignKey": "userId"
       }
     }
   },

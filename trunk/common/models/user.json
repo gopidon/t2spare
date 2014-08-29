@@ -17,6 +17,11 @@
         "model": "userCredential",
         "type": "hasMany",
         "foreignKey": "userId"
+      },
+      "listings": {
+        "model": "Listing",
+        "type": "hasMany",
+        "foreignKey": "userId"
       }
     }
   },

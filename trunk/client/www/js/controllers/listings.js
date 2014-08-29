@@ -45,11 +45,17 @@ angular.module('t2spare.listings',[])
         };
 
         $scope.createListing = function(listing){
-           /* Listing.create(listing, function(data){
+            var newListing = {};
+            var userId = LocalStorage.get("USERID", -1);
+            userId = parseInt(userId);
+            console.log("Fetched userId:"+userId);
 
-            });*/
+            newListing.descr = listing.descr;
+            newListing.location = listing.location;
+            newListing.contact = listing.contact;
+            newListing.userId = userId;
 
-            Listing.create(listing).$promise.then(function(data){
+            Listing.create(newListing).$promise.then(function(data){
                 $log.debug("Created new listing:"+JSON.stringify(data));
                 $scope.topListings.unshift(data);
             });
@@ -87,6 +93,8 @@ angular.module('t2spare.listings',[])
                     console.log(accessToken);
                     $scope.$apply(function(){
                         LocalStorage.set("AUTHENTICATED", true);
+                        LocalStorage.set("USERID", userId);
+                        LocalStorage.set("ACCESSTOKEN", accessToken);
                         $state.go('tab.home');
                     });
 
