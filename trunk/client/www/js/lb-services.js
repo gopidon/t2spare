@@ -12,9 +12,7 @@ var urlBase = "http://192.168.2.80:3000/api";
  * the models exposed by the LoopBack server via the REST API.
  *
  */
-var module = angular.module("lbServices", ['ngResource','t2spare.values']);
-
-
+var module = angular.module("lbServices", ['ngResource']);
 
 /**
  * @ngdoc object
@@ -36,7 +34,7 @@ module.factory(
   "User",
   ['LoopBackResource', 'LoopBackAuth', '$injector', function(Resource, LoopBackAuth, $injector) {
     var R = Resource(
-      urlBase + "/Users/:id",
+      urlBase + "/users/:id",
       { 'id': '@id' },
       {
 
@@ -52,6 +50,11 @@ module.factory(
          * @param {Object=} parameters Request parameters.
          *
          *  - `include` – `{string=}` - Related objects to include in the response. See the description of return value for more details.
+         *   Default value: `user`.
+         *
+         *  - `rememberMe` - `boolean` - Whether the authentication credentials
+         *     should be remembered in localStorage across app/browser restarts.
+         *     Default: `true`.
          *
          * @param {Object} postData Request data.
          *
@@ -75,8 +78,20 @@ module.factory(
          *
          */
         "login": {
-          url: urlBase + "/Users/login",
+          url: urlBase + "/users/login",
           method: "POST",
+          params: {
+            include: "user"
+          },
+          interceptor: {
+            response: function(response) {
+              var accessToken = response.data;
+              LoopBackAuth.setUser(accessToken.id, accessToken.userId, accessToken.user);
+              LoopBackAuth.rememberMe = response.config.params.rememberMe !== false;
+              LoopBackAuth.save();
+              return response.resource;
+            }
+          }
         },
 
         /**
@@ -110,8 +125,15 @@ module.factory(
          * This method returns no data.
          */
         "logout": {
-          url: urlBase + "/Users/logout",
+          url: urlBase + "/users/logout",
           method: "POST",
+          interceptor: {
+            response: function(response) {
+              LoopBackAuth.clearUser();
+              LoopBackAuth.save();
+              return response.resource;
+            }
+          }
         },
 
         /**
@@ -144,7 +166,7 @@ module.factory(
          * This method returns no data.
          */
         "confirm": {
-          url: urlBase + "/Users/confirm",
+          url: urlBase + "/users/confirm",
           method: "GET",
         },
 
@@ -179,8 +201,44 @@ module.factory(
          * This method returns no data.
          */
         "resetPassword": {
-          url: urlBase + "/Users/reset",
+          url: urlBase + "/users/reset",
           method: "POST",
+        },
+
+        // INTERNAL. Use User.identities.findById() instead.
+        "prototype$__findById__identities": {
+          url: urlBase + "/users/:id/identities/:fk",
+          method: "GET",
+        },
+
+        // INTERNAL. Use User.identities.destroyById() instead.
+        "prototype$__destroyById__identities": {
+          url: urlBase + "/users/:id/identities/:fk",
+          method: "DELETE",
+        },
+
+        // INTERNAL. Use User.identities.updateById() instead.
+        "prototype$__updateById__identities": {
+          url: urlBase + "/users/:id/identities/:fk",
+          method: "PUT",
+        },
+
+        // INTERNAL. Use User.credentials.findById() instead.
+        "prototype$__findById__credentials": {
+          url: urlBase + "/users/:id/credentials/:fk",
+          method: "GET",
+        },
+
+        // INTERNAL. Use User.credentials.destroyById() instead.
+        "prototype$__destroyById__credentials": {
+          url: urlBase + "/users/:id/credentials/:fk",
+          method: "DELETE",
+        },
+
+        // INTERNAL. Use User.credentials.updateById() instead.
+        "prototype$__updateById__credentials": {
+          url: urlBase + "/users/:id/credentials/:fk",
+          method: "PUT",
         },
 
         /**
@@ -214,7 +272,7 @@ module.factory(
          * </em>
          */
         "prototype$__findById__accessTokens": {
-          url: urlBase + "/Users/:id/accessTokens/:fk",
+          url: urlBase + "/users/:id/accessTokens/:fk",
           method: "GET",
         },
 
@@ -248,7 +306,7 @@ module.factory(
          *  - `` – `{undefined=}` - 
          */
         "prototype$__destroyById__accessTokens": {
-          url: urlBase + "/Users/:id/accessTokens/:fk",
+          url: urlBase + "/users/:id/accessTokens/:fk",
           method: "DELETE",
         },
 
@@ -287,44 +345,76 @@ module.factory(
          * </em>
          */
         "prototype$__updateById__accessTokens": {
-          url: urlBase + "/Users/:id/accessTokens/:fk",
+          url: urlBase + "/users/:id/accessTokens/:fk",
           method: "PUT",
         },
 
-        // INTERNAL. Use User.identities.findById() instead.
-        "prototype$__findById__identities": {
-          url: urlBase + "/Users/:id/identities/:fk",
+        // INTERNAL. Use User.listings.findById() instead.
+        "prototype$__findById__listings": {
+          url: urlBase + "/users/:id/listings/:fk",
           method: "GET",
         },
 
-        // INTERNAL. Use User.identities.destroyById() instead.
-        "prototype$__destroyById__identities": {
-          url: urlBase + "/Users/:id/identities/:fk",
+        // INTERNAL. Use User.listings.destroyById() instead.
+        "prototype$__destroyById__listings": {
+          url: urlBase + "/users/:id/listings/:fk",
           method: "DELETE",
         },
 
-        // INTERNAL. Use User.identities.updateById() instead.
-        "prototype$__updateById__identities": {
-          url: urlBase + "/Users/:id/identities/:fk",
+        // INTERNAL. Use User.listings.updateById() instead.
+        "prototype$__updateById__listings": {
+          url: urlBase + "/users/:id/listings/:fk",
           method: "PUT",
         },
 
-        // INTERNAL. Use User.credentials.findById() instead.
-        "prototype$__findById__credentials": {
-          url: urlBase + "/Users/:id/credentials/:fk",
+        // INTERNAL. Use User.identities() instead.
+        "prototype$__get__identities": {
+          url: urlBase + "/users/:id/identities",
+          method: "GET",
+          isArray: true,
+        },
+
+        // INTERNAL. Use User.identities.create() instead.
+        "prototype$__create__identities": {
+          url: urlBase + "/users/:id/identities",
+          method: "POST",
+        },
+
+        // INTERNAL. Use User.identities.destroyAll() instead.
+        "prototype$__delete__identities": {
+          url: urlBase + "/users/:id/identities",
+          method: "DELETE",
+        },
+
+        // INTERNAL. Use User.identities.count() instead.
+        "prototype$__count__identities": {
+          url: urlBase + "/users/:id/identities/count",
           method: "GET",
         },
 
-        // INTERNAL. Use User.credentials.destroyById() instead.
-        "prototype$__destroyById__credentials": {
-          url: urlBase + "/Users/:id/credentials/:fk",
+        // INTERNAL. Use User.credentials() instead.
+        "prototype$__get__credentials": {
+          url: urlBase + "/users/:id/credentials",
+          method: "GET",
+          isArray: true,
+        },
+
+        // INTERNAL. Use User.credentials.create() instead.
+        "prototype$__create__credentials": {
+          url: urlBase + "/users/:id/credentials",
+          method: "POST",
+        },
+
+        // INTERNAL. Use User.credentials.destroyAll() instead.
+        "prototype$__delete__credentials": {
+          url: urlBase + "/users/:id/credentials",
           method: "DELETE",
         },
 
-        // INTERNAL. Use User.credentials.updateById() instead.
-        "prototype$__updateById__credentials": {
-          url: urlBase + "/Users/:id/credentials/:fk",
-          method: "PUT",
+        // INTERNAL. Use User.credentials.count() instead.
+        "prototype$__count__credentials": {
+          url: urlBase + "/users/:id/credentials/count",
+          method: "GET",
         },
 
         /**
@@ -334,7 +424,7 @@ module.factory(
          *
          * @description
          *
-         * Queries accessTokens of User.
+         * Queries accessTokens of user.
          *
          * @param {Object=} parameters Request parameters.
          *
@@ -358,7 +448,7 @@ module.factory(
          * </em>
          */
         "prototype$__get__accessTokens": {
-          url: urlBase + "/Users/:id/accessTokens",
+          url: urlBase + "/users/:id/accessTokens",
           method: "GET",
           isArray: true,
         },
@@ -396,7 +486,7 @@ module.factory(
          * </em>
          */
         "prototype$__create__accessTokens": {
-          url: urlBase + "/Users/:id/accessTokens",
+          url: urlBase + "/users/:id/accessTokens",
           method: "POST",
         },
 
@@ -426,7 +516,7 @@ module.factory(
          * This method returns no data.
          */
         "prototype$__delete__accessTokens": {
-          url: urlBase + "/Users/:id/accessTokens",
+          url: urlBase + "/users/:id/accessTokens",
           method: "DELETE",
         },
 
@@ -437,7 +527,7 @@ module.factory(
          *
          * @description
          *
-         * Counts accessTokens of User.
+         * Counts accessTokens of user.
          *
          * @param {Object=} parameters Request parameters.
          *
@@ -459,57 +549,32 @@ module.factory(
          * </em>
          */
         "prototype$__count__accessTokens": {
-          url: urlBase + "/Users/:id/accessTokens/count",
+          url: urlBase + "/users/:id/accessTokens/count",
           method: "GET",
         },
 
-        // INTERNAL. Use User.identities() instead.
-        "prototype$__get__identities": {
-          url: urlBase + "/Users/:id/identities",
-          method: "GET",
-          isArray: true,
-        },
-
-        // INTERNAL. Use User.identities.create() instead.
-        "prototype$__create__identities": {
-          url: urlBase + "/Users/:id/identities",
-          method: "POST",
-        },
-
-        // INTERNAL. Use User.identities.destroyAll() instead.
-        "prototype$__delete__identities": {
-          url: urlBase + "/Users/:id/identities",
-          method: "DELETE",
-        },
-
-        // INTERNAL. Use User.identities.count() instead.
-        "prototype$__count__identities": {
-          url: urlBase + "/Users/:id/identities/count",
-          method: "GET",
-        },
-
-        // INTERNAL. Use User.credentials() instead.
-        "prototype$__get__credentials": {
-          url: urlBase + "/Users/:id/credentials",
+        // INTERNAL. Use User.listings() instead.
+        "prototype$__get__listings": {
+          url: urlBase + "/users/:id/listings",
           method: "GET",
           isArray: true,
         },
 
-        // INTERNAL. Use User.credentials.create() instead.
-        "prototype$__create__credentials": {
-          url: urlBase + "/Users/:id/credentials",
+        // INTERNAL. Use User.listings.create() instead.
+        "prototype$__create__listings": {
+          url: urlBase + "/users/:id/listings",
           method: "POST",
         },
 
-        // INTERNAL. Use User.credentials.destroyAll() instead.
-        "prototype$__delete__credentials": {
-          url: urlBase + "/Users/:id/credentials",
+        // INTERNAL. Use User.listings.destroyAll() instead.
+        "prototype$__delete__listings": {
+          url: urlBase + "/users/:id/listings",
           method: "DELETE",
         },
 
-        // INTERNAL. Use User.credentials.count() instead.
-        "prototype$__count__credentials": {
-          url: urlBase + "/Users/:id/credentials/count",
+        // INTERNAL. Use User.listings.count() instead.
+        "prototype$__count__listings": {
+          url: urlBase + "/users/:id/listings/count",
           method: "GET",
         },
 
@@ -547,7 +612,7 @@ module.factory(
          * </em>
          */
         "create": {
-          url: urlBase + "/Users",
+          url: urlBase + "/users",
           method: "POST",
         },
 
@@ -585,7 +650,7 @@ module.factory(
          * </em>
          */
         "upsert": {
-          url: urlBase + "/Users",
+          url: urlBase + "/users",
           method: "PUT",
         },
 
@@ -617,7 +682,7 @@ module.factory(
          *  - `exists` – `{boolean=}` - 
          */
         "exists": {
-          url: urlBase + "/Users/:id/exists",
+          url: urlBase + "/users/:id/exists",
           method: "GET",
         },
 
@@ -650,7 +715,7 @@ module.factory(
          * </em>
          */
         "findById": {
-          url: urlBase + "/Users/:id",
+          url: urlBase + "/users/:id",
           method: "GET",
         },
 
@@ -683,7 +748,7 @@ module.factory(
          * </em>
          */
         "find": {
-          url: urlBase + "/Users",
+          url: urlBase + "/users",
           method: "GET",
           isArray: true,
         },
@@ -717,7 +782,7 @@ module.factory(
          * </em>
          */
         "findOne": {
-          url: urlBase + "/Users/findOne",
+          url: urlBase + "/users/findOne",
           method: "GET",
         },
 
@@ -751,7 +816,7 @@ module.factory(
          * This method returns no data.
          */
         "updateAll": {
-          url: urlBase + "/Users/update",
+          url: urlBase + "/users/update",
           method: "POST",
         },
 
@@ -781,7 +846,7 @@ module.factory(
          * This method returns no data.
          */
         "deleteById": {
-          url: urlBase + "/Users/:id",
+          url: urlBase + "/users/:id",
           method: "DELETE",
         },
 
@@ -813,7 +878,7 @@ module.factory(
          *  - `count` – `{number=}` - 
          */
         "count": {
-          url: urlBase + "/Users/count",
+          url: urlBase + "/users/count",
           method: "GET",
         },
 
@@ -850,7 +915,7 @@ module.factory(
          * </em>
          */
         "prototype$updateAttributes": {
-          url: urlBase + "/Users/:id",
+          url: urlBase + "/users/:id",
           method: "PUT",
         },
 
@@ -865,11 +930,97 @@ module.factory(
           url: urlBase + "/userCredentials/:id/user",
           method: "GET",
         },
+
+        // INTERNAL. Use Listing.user() instead.
+        "::get::Listing::user": {
+          url: urlBase + "/Listings/:id/user",
+          method: "GET",
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User#getCurrent
+         * @methodOf lbServices.User
+         *
+         * @description
+         *
+         * Get data of the currently logged user. Fail with HTTP result 401
+         * when there is no user logged in.
+         *
+         * @param {Function(Object, Object)=} successCb
+         *    Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *    `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         */
+        "getCurrent": {
+           url: urlBase + "/" + "/users" + "/:id",
+           method: "GET",
+           params: {
+             id: function() {
+              var id = LoopBackAuth.currentUserId;
+              if (id == null) id = '__anonymous__';
+              return id;
+            },
+          },
+          interceptor: {
+            response: function(response) {
+              LoopBackAuth.currentUserData = response.data;
+              return response.resource;
+            }
+          },
+          __isGetCurrentUser__ : true
+        }
       }
     );
 
 
 
+        /**
+         * @ngdoc method
+         * @name lbServices.User#getCachedCurrent
+         * @methodOf lbServices.User
+         *
+         * @description
+         *
+         * Get data of the currently logged user that was returned by the last
+         * call to {@link lbServices.User#login} or
+         * {@link lbServices.User#getCurrent}. Return null when there
+         * is no user logged in or the data of the current user were not fetched
+         * yet.
+         *
+         * @return {Object} A User instance.
+         */
+        R.getCachedCurrent = function() {
+          var data = LoopBackAuth.currentUserData;
+          return data ? new R(data) : null;
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User#isAuthenticated
+         * @methodOf lbServices.User
+         *
+         * @return {boolean} True if the current user is authenticated (logged in).
+         */
+        R.isAuthenticated = function() {
+          return this.getCurrentId() != null;
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User#getCurrentId
+         * @methodOf lbServices.User
+         *
+         * @return {Object} Id of the currently logged-in user or null.
+         */
+        R.getCurrentId = function() {
+          return LoopBackAuth.currentUserId;
+        };
 
     /**
      * @ngdoc object
@@ -892,7 +1043,7 @@ module.factory(
          *
          * @description
          *
-         * Queries identities of User.
+         * Queries identities of user.
          *
          * @param {Object=} parameters Request parameters.
          *
@@ -917,7 +1068,7 @@ module.factory(
          */
         R.identities = function() {
           var TargetResource = $injector.get("UserIdentity");
-          var action = TargetResource["::get::User::identities"];
+          var action = TargetResource["::get::user::identities"];
           return action.apply(R, arguments);
         };
 
@@ -928,7 +1079,7 @@ module.factory(
          *
          * @description
          *
-         * Counts identities of User.
+         * Counts identities of user.
          *
          * @param {Object=} parameters Request parameters.
          *
@@ -951,7 +1102,7 @@ module.factory(
          */
         R.identities.count = function() {
           var TargetResource = $injector.get("UserIdentity");
-          var action = TargetResource["::count::User::identities"];
+          var action = TargetResource["::count::user::identities"];
           return action.apply(R, arguments);
         };
 
@@ -989,7 +1140,7 @@ module.factory(
          */
         R.identities.create = function() {
           var TargetResource = $injector.get("UserIdentity");
-          var action = TargetResource["::create::User::identities"];
+          var action = TargetResource["::create::user::identities"];
           return action.apply(R, arguments);
         };
 
@@ -1020,7 +1171,7 @@ module.factory(
          */
         R.identities.destroyAll = function() {
           var TargetResource = $injector.get("UserIdentity");
-          var action = TargetResource["::delete::User::identities"];
+          var action = TargetResource["::delete::user::identities"];
           return action.apply(R, arguments);
         };
 
@@ -1055,7 +1206,7 @@ module.factory(
          */
         R.identities.destroyById = function() {
           var TargetResource = $injector.get("UserIdentity");
-          var action = TargetResource["::destroyById::User::identities"];
+          var action = TargetResource["::destroyById::user::identities"];
           return action.apply(R, arguments);
         };
 
@@ -1091,7 +1242,7 @@ module.factory(
          */
         R.identities.findById = function() {
           var TargetResource = $injector.get("UserIdentity");
-          var action = TargetResource["::findById::User::identities"];
+          var action = TargetResource["::findById::user::identities"];
           return action.apply(R, arguments);
         };
 
@@ -1131,7 +1282,7 @@ module.factory(
          */
         R.identities.updateById = function() {
           var TargetResource = $injector.get("UserIdentity");
-          var action = TargetResource["::updateById::User::identities"];
+          var action = TargetResource["::updateById::user::identities"];
           return action.apply(R, arguments);
         };
     /**
@@ -1155,7 +1306,7 @@ module.factory(
          *
          * @description
          *
-         * Queries credentials of User.
+         * Queries credentials of user.
          *
          * @param {Object=} parameters Request parameters.
          *
@@ -1180,7 +1331,7 @@ module.factory(
          */
         R.credentials = function() {
           var TargetResource = $injector.get("UserCredential");
-          var action = TargetResource["::get::User::credentials"];
+          var action = TargetResource["::get::user::credentials"];
           return action.apply(R, arguments);
         };
 
@@ -1191,7 +1342,7 @@ module.factory(
          *
          * @description
          *
-         * Counts credentials of User.
+         * Counts credentials of user.
          *
          * @param {Object=} parameters Request parameters.
          *
@@ -1214,7 +1365,7 @@ module.factory(
          */
         R.credentials.count = function() {
           var TargetResource = $injector.get("UserCredential");
-          var action = TargetResource["::count::User::credentials"];
+          var action = TargetResource["::count::user::credentials"];
           return action.apply(R, arguments);
         };
 
@@ -1252,7 +1403,7 @@ module.factory(
          */
         R.credentials.create = function() {
           var TargetResource = $injector.get("UserCredential");
-          var action = TargetResource["::create::User::credentials"];
+          var action = TargetResource["::create::user::credentials"];
           return action.apply(R, arguments);
         };
 
@@ -1283,7 +1434,7 @@ module.factory(
          */
         R.credentials.destroyAll = function() {
           var TargetResource = $injector.get("UserCredential");
-          var action = TargetResource["::delete::User::credentials"];
+          var action = TargetResource["::delete::user::credentials"];
           return action.apply(R, arguments);
         };
 
@@ -1318,7 +1469,7 @@ module.factory(
          */
         R.credentials.destroyById = function() {
           var TargetResource = $injector.get("UserCredential");
-          var action = TargetResource["::destroyById::User::credentials"];
+          var action = TargetResource["::destroyById::user::credentials"];
           return action.apply(R, arguments);
         };
 
@@ -1354,7 +1505,7 @@ module.factory(
          */
         R.credentials.findById = function() {
           var TargetResource = $injector.get("UserCredential");
-          var action = TargetResource["::findById::User::credentials"];
+          var action = TargetResource["::findById::user::credentials"];
           return action.apply(R, arguments);
         };
 
@@ -1394,7 +1545,270 @@ module.factory(
          */
         R.credentials.updateById = function() {
           var TargetResource = $injector.get("UserCredential");
-          var action = TargetResource["::updateById::User::credentials"];
+          var action = TargetResource["::updateById::user::credentials"];
+          return action.apply(R, arguments);
+        };
+    /**
+     * @ngdoc object
+     * @name lbServices.User.listings
+     * @object
+     * @description
+     *
+     * The object `User.listings` groups methods
+     * manipulating `Listing` instances related to `User`.
+     *
+     * Use {@link lbServices.User#listings} to query
+     * all related instances.
+     */
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User#listings
+         * @methodOf lbServices.User
+         *
+         * @description
+         *
+         * Queries listings of user.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {Function(Array.<Object>, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Listing` object.)
+         * </em>
+         */
+        R.listings = function() {
+          var TargetResource = $injector.get("Listing");
+          var action = TargetResource["::get::user::listings"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User.listings#count
+         * @methodOf lbServices.User.listings
+         *
+         * @description
+         *
+         * Counts listings of user.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Listing` object.)
+         * </em>
+         */
+        R.listings.count = function() {
+          var TargetResource = $injector.get("Listing");
+          var action = TargetResource["::count::user::listings"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User.listings#create
+         * @methodOf lbServices.User.listings
+         *
+         * @description
+         *
+         * Creates a new instance in listings of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Listing` object.)
+         * </em>
+         */
+        R.listings.create = function() {
+          var TargetResource = $injector.get("Listing");
+          var action = TargetResource["::create::user::listings"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User.listings#destroyAll
+         * @methodOf lbServices.User.listings
+         *
+         * @description
+         *
+         * Deletes all listings of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.listings.destroyAll = function() {
+          var TargetResource = $injector.get("Listing");
+          var action = TargetResource["::delete::user::listings"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User.listings#destroyById
+         * @methodOf lbServices.User.listings
+         *
+         * @description
+         *
+         * Delete a related item by id for listings
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `fk` – `{*}` - Foreign key for listings
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `` – `{undefined=}` - 
+         */
+        R.listings.destroyById = function() {
+          var TargetResource = $injector.get("Listing");
+          var action = TargetResource["::destroyById::user::listings"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User.listings#findById
+         * @methodOf lbServices.User.listings
+         *
+         * @description
+         *
+         * Find a related item by id for listings
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `fk` – `{*}` - Foreign key for listings
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Listing` object.)
+         * </em>
+         */
+        R.listings.findById = function() {
+          var TargetResource = $injector.get("Listing");
+          var action = TargetResource["::findById::user::listings"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.User.listings#updateById
+         * @methodOf lbServices.User.listings
+         *
+         * @description
+         *
+         * Update a related item by id for listings
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `fk` – `{*}` - Foreign key for listings
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Listing` object.)
+         * </em>
+         */
+        R.listings.updateById = function() {
+          var TargetResource = $injector.get("Listing");
+          var action = TargetResource["::updateById::user::listings"];
           return action.apply(R, arguments);
         };
 
@@ -1773,45 +2187,45 @@ module.factory(
         },
 
         // INTERNAL. Use User.identities.findById() instead.
-        "::findById::User::identities": {
-          url: urlBase + "/Users/:id/identities/:fk",
+        "::findById::user::identities": {
+          url: urlBase + "/users/:id/identities/:fk",
           method: "GET",
         },
 
         // INTERNAL. Use User.identities.destroyById() instead.
-        "::destroyById::User::identities": {
-          url: urlBase + "/Users/:id/identities/:fk",
+        "::destroyById::user::identities": {
+          url: urlBase + "/users/:id/identities/:fk",
           method: "DELETE",
         },
 
         // INTERNAL. Use User.identities.updateById() instead.
-        "::updateById::User::identities": {
-          url: urlBase + "/Users/:id/identities/:fk",
+        "::updateById::user::identities": {
+          url: urlBase + "/users/:id/identities/:fk",
           method: "PUT",
         },
 
         // INTERNAL. Use User.identities() instead.
-        "::get::User::identities": {
-          url: urlBase + "/Users/:id/identities",
+        "::get::user::identities": {
+          url: urlBase + "/users/:id/identities",
           method: "GET",
           isArray: true,
         },
 
         // INTERNAL. Use User.identities.create() instead.
-        "::create::User::identities": {
-          url: urlBase + "/Users/:id/identities",
+        "::create::user::identities": {
+          url: urlBase + "/users/:id/identities",
           method: "POST",
         },
 
         // INTERNAL. Use User.identities.destroyAll() instead.
-        "::delete::User::identities": {
-          url: urlBase + "/Users/:id/identities",
+        "::delete::user::identities": {
+          url: urlBase + "/users/:id/identities",
           method: "DELETE",
         },
 
         // INTERNAL. Use User.identities.count() instead.
-        "::count::User::identities": {
-          url: urlBase + "/Users/:id/identities/count",
+        "::count::user::identities": {
+          url: urlBase + "/users/:id/identities/count",
           method: "GET",
         },
       }
@@ -2232,45 +2646,45 @@ module.factory(
         },
 
         // INTERNAL. Use User.credentials.findById() instead.
-        "::findById::User::credentials": {
-          url: urlBase + "/Users/:id/credentials/:fk",
+        "::findById::user::credentials": {
+          url: urlBase + "/users/:id/credentials/:fk",
           method: "GET",
         },
 
         // INTERNAL. Use User.credentials.destroyById() instead.
-        "::destroyById::User::credentials": {
-          url: urlBase + "/Users/:id/credentials/:fk",
+        "::destroyById::user::credentials": {
+          url: urlBase + "/users/:id/credentials/:fk",
           method: "DELETE",
         },
 
         // INTERNAL. Use User.credentials.updateById() instead.
-        "::updateById::User::credentials": {
-          url: urlBase + "/Users/:id/credentials/:fk",
+        "::updateById::user::credentials": {
+          url: urlBase + "/users/:id/credentials/:fk",
           method: "PUT",
         },
 
         // INTERNAL. Use User.credentials() instead.
-        "::get::User::credentials": {
-          url: urlBase + "/Users/:id/credentials",
+        "::get::user::credentials": {
+          url: urlBase + "/users/:id/credentials",
           method: "GET",
           isArray: true,
         },
 
         // INTERNAL. Use User.credentials.create() instead.
-        "::create::User::credentials": {
-          url: urlBase + "/Users/:id/credentials",
+        "::create::user::credentials": {
+          url: urlBase + "/users/:id/credentials",
           method: "POST",
         },
 
         // INTERNAL. Use User.credentials.destroyAll() instead.
-        "::delete::User::credentials": {
-          url: urlBase + "/Users/:id/credentials",
+        "::delete::user::credentials": {
+          url: urlBase + "/users/:id/credentials",
           method: "DELETE",
         },
 
         // INTERNAL. Use User.credentials.count() instead.
-        "::count::User::credentials": {
-          url: urlBase + "/Users/:id/credentials/count",
+        "::count::user::credentials": {
+          url: urlBase + "/users/:id/credentials/count",
           method: "GET",
         },
       }
@@ -2321,6 +2735,380 @@ module.factory(
 
 /**
  * @ngdoc object
+ * @name lbServices.Acl
+ * @object
+ *
+ * @description
+ *
+ * A $resource object for interacting with the `Acl` model.
+ *
+ * ## Example
+ *
+ * See
+ * {@link http://docs.angularjs.org/api/ngResource.$resource#example $resource}
+ * for an example of using this object.
+ *
+ */
+module.factory(
+  "Acl",
+  ['LoopBackResource', 'LoopBackAuth', '$injector', function(Resource, LoopBackAuth, $injector) {
+    var R = Resource(
+      urlBase + "/acls/:id",
+      { 'id': '@id' },
+      {
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#create
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Create a new instance of the model and persist it into the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Acl` object.)
+         * </em>
+         */
+        "create": {
+          url: urlBase + "/acls",
+          method: "POST",
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#upsert
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Update an existing model instance or insert a new one into the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Acl` object.)
+         * </em>
+         */
+        "upsert": {
+          url: urlBase + "/acls",
+          method: "PUT",
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#exists
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Check whether a model instance exists in the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `exists` – `{boolean=}` - 
+         */
+        "exists": {
+          url: urlBase + "/acls/:id/exists",
+          method: "GET",
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#findById
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Find a model instance by id from the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Acl` object.)
+         * </em>
+         */
+        "findById": {
+          url: urlBase + "/acls/:id",
+          method: "GET",
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#find
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Find all instances of the model matched by filter from the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `filter` – `{object=}` - Filter defining fields, where, orderBy, offset, and limit
+         *
+         * @param {Function(Array.<Object>, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Acl` object.)
+         * </em>
+         */
+        "find": {
+          url: urlBase + "/acls",
+          method: "GET",
+          isArray: true,
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#findOne
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Find first instance of the model matched by filter from the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `filter` – `{object=}` - Filter defining fields, where, orderBy, offset, and limit
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Acl` object.)
+         * </em>
+         */
+        "findOne": {
+          url: urlBase + "/acls/findOne",
+          method: "GET",
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#updateAll
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Update instances of the model matched by where from the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        "updateAll": {
+          url: urlBase + "/acls/update",
+          method: "POST",
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#deleteById
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        "deleteById": {
+          url: urlBase + "/acls/:id",
+          method: "DELETE",
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#count
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Count instances of the model matched by where from the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        "count": {
+          url: urlBase + "/acls/count",
+          method: "GET",
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Acl#prototype$updateAttributes
+         * @methodOf lbServices.Acl
+         *
+         * @description
+         *
+         * Update attributes for a model instance and persist it into the data source
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - ACL id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Acl` object.)
+         * </em>
+         */
+        "prototype$updateAttributes": {
+          url: urlBase + "/acls/:id",
+          method: "PUT",
+        },
+      }
+    );
+
+
+
+
+
+    return R;
+  }]);
+
+/**
+ * @ngdoc object
  * @name lbServices.Listing
  * @object
  *
@@ -2342,6 +3130,12 @@ module.factory(
       urlBase + "/Listings/:id",
       { 'id': '@id' },
       {
+
+        // INTERNAL. Use Listing.user() instead.
+        "prototype$__get__user": {
+          url: urlBase + "/Listings/:id/user",
+          method: "GET",
+        },
 
         // INTERNAL. Use Listing.comments.findById() instead.
         "prototype$__findById__comments": {
@@ -2770,6 +3564,49 @@ module.factory(
           method: "PUT",
         },
 
+        // INTERNAL. Use User.listings.findById() instead.
+        "::findById::user::listings": {
+          url: urlBase + "/users/:id/listings/:fk",
+          method: "GET",
+        },
+
+        // INTERNAL. Use User.listings.destroyById() instead.
+        "::destroyById::user::listings": {
+          url: urlBase + "/users/:id/listings/:fk",
+          method: "DELETE",
+        },
+
+        // INTERNAL. Use User.listings.updateById() instead.
+        "::updateById::user::listings": {
+          url: urlBase + "/users/:id/listings/:fk",
+          method: "PUT",
+        },
+
+        // INTERNAL. Use User.listings() instead.
+        "::get::user::listings": {
+          url: urlBase + "/users/:id/listings",
+          method: "GET",
+          isArray: true,
+        },
+
+        // INTERNAL. Use User.listings.create() instead.
+        "::create::user::listings": {
+          url: urlBase + "/users/:id/listings",
+          method: "POST",
+        },
+
+        // INTERNAL. Use User.listings.destroyAll() instead.
+        "::delete::user::listings": {
+          url: urlBase + "/users/:id/listings",
+          method: "DELETE",
+        },
+
+        // INTERNAL. Use User.listings.count() instead.
+        "::count::user::listings": {
+          url: urlBase + "/users/:id/listings/count",
+          method: "GET",
+        },
+
         // INTERNAL. Use ListingComment.listing() instead.
         "::get::ListingComment::listing": {
           url: urlBase + "/ListingComments/:id/listing",
@@ -2781,6 +3618,42 @@ module.factory(
 
 
 
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Listing#user
+         * @methodOf lbServices.Listing
+         *
+         * @description
+         *
+         * Fetches belongsTo relation user
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {Function(Object, Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {Function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @return {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `User` object.)
+         * </em>
+         */
+        R.user = function() {
+          var TargetResource = $injector.get("User");
+          var action = TargetResource["::get::Listing::user"];
+          return action.apply(R, arguments);
+        };
     /**
      * @ngdoc object
      * @name lbServices.Listing.comments
