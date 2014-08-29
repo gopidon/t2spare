@@ -6,11 +6,23 @@ angular.module('t2spare.listings',[])
 
         var loginWindow, close, hasUserId, userId, accessToken, userStr, accessTokenStr;
         $scope.URLConstants = URLConstants;
-        $scope.topListings = [];
+        $scope.topListings;
+        $scope.myListings;
         $scope.loginModal = null;
         $scope.listingModal = null;
         $scope.search = {};
 
+
+        $scope.getUserId = function(){
+            var userId = LocalStorage.get("USERID");
+            if(userId == undefined){
+                return -1;
+            }
+            else
+            {
+                return userId;
+            }
+        }
 
         $scope.getAuthenticated = function(){
             var auth = LocalStorage.get("AUTHENTICATED");
@@ -46,7 +58,7 @@ angular.module('t2spare.listings',[])
             $scope.listingModal.hide();
         };
 
-
+        //Fetch top listings
         Listing.find({filter:{order: 'id desc', limit: 10}}).$promise.then(function(data){
            $scope.topListings = data;
         });
@@ -90,10 +102,13 @@ angular.module('t2spare.listings',[])
 
         $scope.onMyListingsTabSelected = function(){
             if($scope.getAuthenticated()){
-
+                  // Load user listings
+                Listing.find({filter:{where: {userId: $scope.getUserId()}}}).$promise.then(function(data){
+                    $scope.myListings = data;
+                });
             }
             else{
-                $state.go('tab.home');
+                //$state.go('tab.home');
                 $scope.loginModal.show();
 
             }
@@ -101,40 +116,46 @@ angular.module('t2spare.listings',[])
 
 
         $scope.authFB = function(){
-            /*$http.defaults.headers.common['Authorization'] = '887RdUdAjdpGlydXY1rHhdfQcYVqlD7YttpIwoE2baJywLff2bPmi27Wmv1NNkvw';
-             User.findById({id: 1}, function(data){
-             console.log("Fetched data");
-             console.log(JSON.stringify(data));
-             });*/
-            loginWindow = $window.open($scope.URLConstants.FBAuthURL,'_blank','location=yes');
-            loginWindow.addEventListener('loadstart', function(event){
-                console.log(event.url);
-                close = event.url.indexOf("blank.html");
-                hasUserId = event.url.indexOf("userId");
-                console.log("Has UserId:"+hasUserId);
-                if(close > -1 && hasUserId > -1){
-                    userId = event.url.match('userId=[^&]*');
-                    accessToken = event.url.match('accessToken=[^#]*');
-                    userStr = userId[0];
-                    accessTokenStr = accessToken[0];
-                    userId = userStr.substring(userStr.indexOf('=')+1, userStr.length);
-                    //console.log(userStr);
-                    //console.log(accessTokenStr);
-                    //console.log(userId);
-                    accessToken = accessTokenStr.substring(accessTokenStr.indexOf('=')+1, accessTokenStr.length);
-                    //console.log(accessToken);
-                    $scope.$apply(function(){
-                        LocalStorage.set("AUTHENTICATED", true);
-                        LocalStorage.set("USERID", userId);
-                        LocalStorage.set("ACCESSTOKEN", accessToken);
-                        $scope.loginModal.hide();
-                    });
+            if(!$rootScope.inWeb){
+                loginWindow = $window.open($scope.URLConstants.FBAuthURL,'_blank','location=yes');
+                loginWindow.addEventListener('loadstart', function(event){
+                    console.log(event.url);
+                    close = event.url.indexOf("blank.html");
+                    hasUserId = event.url.indexOf("userId");
+                    console.log("Has UserId:"+hasUserId);
+                    if(close > -1 && hasUserId > -1){
+                        userId = event.url.match('userId=[^&]*');
+                        accessToken = event.url.match('accessToken=[^#]*');
+                        userStr = userId[0];
+                        accessTokenStr = accessToken[0];
+                        userId = userStr.substring(userStr.indexOf('=')+1, userStr.length);
+                        //console.log(userStr);
+                        //console.log(accessTokenStr);
+                        //console.log(userId);
+                        accessToken = accessTokenStr.substring(accessTokenStr.indexOf('=')+1, accessTokenStr.length);
+                        //console.log(accessToken);
+                        $scope.$apply(function(){
+                            LocalStorage.set("AUTHENTICATED", true);
+                            LocalStorage.set("USERID", userId);
+                            LocalStorage.set("ACCESSTOKEN", accessToken);
+                            $scope.loginModal.hide();
+                        });
 
-                    loginWindow.close();
-                }
+                        loginWindow.close();
+                    }
 
 
-            });
+                });
+            }
+            else{
+                $timeout(function(){
+                    LocalStorage.set("AUTHENTICATED", true);
+                    LocalStorage.set("USERID", 1);
+                    LocalStorage.set("ACCESSTOKEN", '');
+                    $scope.loginModal.hide();
+                });
+            }
+
         }
 
 

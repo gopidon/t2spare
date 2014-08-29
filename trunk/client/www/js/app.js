@@ -8,6 +8,7 @@
 angular.module('t2spare', ['ionic', 't2spare.system', 't2spare.listings','t2spare.values','lbServices'])
 
 .run(function($ionicPlatform,$rootScope) {
+  $rootScope.inWeb = true;
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
