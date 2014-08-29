@@ -42,7 +42,7 @@ angular.module('t2spare', ['ionic', 't2spare.system', 't2spare.listings','t2spar
     .state('tab.login', {
           url: '/login',
           views: {
-              'tab-home': {
+              'tab-myListings': {
                   templateUrl: 'templates/tab-login.html',
                   controller: 'HomeCtrl'
               }
@@ -66,7 +66,7 @@ angular.module('t2spare', ['ionic', 't2spare.system', 't2spare.listings','t2spar
       views: {
         'tab-myListings': {
           templateUrl: 'templates/tab-myListings.html',
-          controller: 'MyListingsCtrl'
+          controller: 'HomeCtrl'
         }
       }
     })

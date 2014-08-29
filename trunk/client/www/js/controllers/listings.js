@@ -7,8 +7,45 @@ angular.module('t2spare.listings',[])
         var loginWindow, close, hasUserId, userId, accessToken, userStr, accessTokenStr;
         $scope.URLConstants = URLConstants;
         $scope.topListings = [];
+        $scope.loginModal = null;
         $scope.listingModal = null;
         $scope.search = {};
+
+
+        $scope.getAuthenticated = function(){
+            var auth = LocalStorage.get("AUTHENTICATED");
+            if(auth){
+                return true
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // Create modals
+        $ionicModal.fromTemplateUrl('login.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.loginModal = modal;
+        });
+
+        $scope.closeLoginModal = function() {
+            $scope.loginModal.hide();
+        };
+
+        $ionicModal.fromTemplateUrl('new-listing.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.listingModal = modal;
+        });
+
+        $scope.closeListingModal = function() {
+            $scope.listingModal.hide();
+        };
+
 
         Listing.find({filter:{order: 'id desc', limit: 10}}).$promise.then(function(data){
            $scope.topListings = data;
@@ -20,35 +57,24 @@ angular.module('t2spare.listings',[])
             });
         }
 
-        $ionicModal.fromTemplateUrl('new-listing.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function(modal) {
-            $scope.listingModal = modal;
-        });
-
 
         $scope.addListing = function() {
             //check if user is authenticated
-            var auth = LocalStorage.get("AUTHENTICATED");
-            if(auth){
+            if($scope.getAuthenticated()){
                 $scope.listingModal.show();
             }
             else{
-                $scope.goToLoginPage();
+                $scope.loginModal.show();
             }
 
         };
 
-        $scope.closeListing = function() {
-            $scope.listingModal.hide();
-        };
 
         $scope.createListing = function(listing){
             var newListing = {};
             var userId = LocalStorage.get("USERID", -1);
             userId = parseInt(userId);
-            console.log("Fetched userId:"+userId);
+            $log.debug("createListing::Fetched userId:"+userId);
 
             newListing.descr = listing.descr;
             newListing.location = listing.location;
@@ -62,10 +88,16 @@ angular.module('t2spare.listings',[])
             $scope.listingModal.hide();
         }
 
-        $scope.goToLoginPage = function(){
-            $state.go('tab.login');
-        }
+        $scope.onMyListingsTabSelected = function(){
+            if($scope.getAuthenticated()){
 
+            }
+            else{
+                $state.go('tab.home');
+                $scope.loginModal.show();
+
+            }
+        }
 
 
         $scope.authFB = function(){
@@ -86,16 +118,16 @@ angular.module('t2spare.listings',[])
                     userStr = userId[0];
                     accessTokenStr = accessToken[0];
                     userId = userStr.substring(userStr.indexOf('=')+1, userStr.length);
-                    console.log(userStr);
-                    console.log(accessTokenStr);
-                    console.log(userId);
+                    //console.log(userStr);
+                    //console.log(accessTokenStr);
+                    //console.log(userId);
                     accessToken = accessTokenStr.substring(accessTokenStr.indexOf('=')+1, accessTokenStr.length);
-                    console.log(accessToken);
+                    //console.log(accessToken);
                     $scope.$apply(function(){
                         LocalStorage.set("AUTHENTICATED", true);
                         LocalStorage.set("USERID", userId);
                         LocalStorage.set("ACCESSTOKEN", accessToken);
-                        $state.go('tab.home');
+                        $scope.loginModal.hide();
                     });
 
                     loginWindow.close();

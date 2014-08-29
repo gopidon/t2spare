@@ -45,6 +45,8 @@
       have templates inline in this html file if you'd like)
     -->
     <ion-nav-view>
+
+        <!-- Modals -->
         <script id="new-listing.html" type="text/ng-template">
 
             <ion-modal-view>
@@ -52,7 +54,7 @@
                 <!-- Modal header bar -->
                 <ion-header-bar class="bar-secondary">
                     <h1 class="title">Add New Listing</h1>
-                    <button class="button button-clear button-positive" ng-click="closeListing()">Cancel</button>
+                    <button class="button button-clear button-positive" ng-click="closeListingModal()">Cancel</button>
                 </ion-header-bar>
 
                 <!-- Modal content area -->
@@ -78,6 +80,40 @@
                             <button type="submit" class="button button-block button-positive">Create Listing</button>
                         </div>
                     </form>
+
+                </ion-content>
+
+            </ion-modal-view>
+
+        </script>
+
+
+        <!-- Login modal -->
+        <script id="login.html" type="text/ng-template">
+
+            <ion-modal-view>
+
+                <!-- Modal header bar -->
+                <ion-header-bar class="bar-secondary">
+                    <h1 class="title">Login</h1>
+                    <button class="button button-clear button-positive" ng-click="closeLoginModal()">Cancel</button>
+                </ion-header-bar>
+
+                <!-- Modal content area -->
+                <ion-content class="padding">
+
+                    <button class="button button-block button-positive" ng-click="authFB()">
+                        <i class="ion-social-facebook"></i>
+                        Facebook
+                    </button>
+                    <button class="button button-block button-positive">
+                        <i class="ion-social-google"></i>
+                        Google
+                    </button>
+                    <button class="button button-block button-positive">
+                        <i class="ion-social-twitter"></i>
+                        Twitter
+                    </button>
 
                 </ion-content>
 
