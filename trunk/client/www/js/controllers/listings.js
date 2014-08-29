@@ -63,7 +63,7 @@ angular.module('t2spare.listings',[])
            $scope.topListings = data;
         });
 
-        $scope.searchByKey = function(){
+        $scope.searchTopListingsByKey = function(){
             Listing.find({filter:{where : {descr: {like: '%'+$scope.search.searchKey+'%'}}, order: 'id desc', limit: 10}}).$promise.then(function(data){
                 $scope.topListings = data;
             });
@@ -112,6 +112,12 @@ angular.module('t2spare.listings',[])
                 $scope.loginModal.show();
 
             }
+        }
+
+        $scope.searchMyListingsByKey = function(){
+            Listing.find({filter:{where : {userId: $scope.getUserId(), descr: {like: '%'+$scope.search.searchKey+'%'}}}}).$promise.then(function(data){
+                $scope.myListings = data;
+            });
         }
 
 
