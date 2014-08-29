@@ -87,7 +87,7 @@ angular.module('t2spare.listings',[])
                     console.log(accessToken);
                     $scope.$apply(function(){
                         LocalStorage.set("AUTHENTICATED", true);
-                        $scope.goToLoginPage();
+                        $state.go('tab.home');
                     });
 
                     loginWindow.close();

@@ -3,6 +3,6 @@
  */
 angular.module('t2spare.values',[])
 .value('URLConstants', {
-       FBAuthURL: 'http://localhost:3000/auth/facebook',
+       FBAuthURL: 'http://192.168.2.80:3000/auth/facebook',
        RestAPIRoot: 'http://localhost:3000/api'
     });

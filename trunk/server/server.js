@@ -66,7 +66,7 @@ app.get('/auth/loginSuccess', function(req, res, next) {
     //res.render('loginSuccess',{user: req.user});
     //res.redirect('?userId='+req.user.id);
     //res.redirect("https://www.facebook.com/connect/blank.html?userId="+req.user.id+'&accessToken='+access_token);
-    res.redirect("http://localhost:3000/blank.html?userId="+req.user.id+'&accessToken='+access_token);
+    res.redirect("http://192.168.2.80:3000/blank.html?userId="+req.user.id+'&accessToken='+access_token);
 });
 
 
