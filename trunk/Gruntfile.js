@@ -123,6 +123,6 @@ module.exports = function(grunt) {
     grunt.option('force', true);
 
     // Default task.
-    grunt.registerTask('default', ['jshint','docular','concurrent']);
+    grunt.registerTask('default', ['jshint','loopback_sdk_angular','docular','concurrent']);
 
 };
