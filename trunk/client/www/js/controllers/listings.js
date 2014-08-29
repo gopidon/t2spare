@@ -96,6 +96,9 @@ angular.module('t2spare.listings',[])
             Listing.create(newListing).$promise.then(function(data){
                 $log.debug("Created new listing:"+JSON.stringify(data));
                 $scope.topListings.unshift(data);
+                if($scope.myListings != undefined){
+                    $scope.myListings.unshift(data);
+                }
             });
             $scope.listingModal.hide();
         }
@@ -103,7 +106,7 @@ angular.module('t2spare.listings',[])
         $scope.onMyListingsTabSelected = function(){
             if($scope.getAuthenticated()){
                   // Load user listings
-                Listing.find({filter:{where: {userId: $scope.getUserId()}}}).$promise.then(function(data){
+                Listing.find({filter:{where: {userId: $scope.getUserId()}, order:'id desc'}}).$promise.then(function(data){
                     $scope.myListings = data;
                 });
             }
@@ -115,7 +118,7 @@ angular.module('t2spare.listings',[])
         }
 
         $scope.searchMyListingsByKey = function(){
-            Listing.find({filter:{where : {userId: $scope.getUserId(), descr: {like: '%'+$scope.search.searchKey+'%'}}}}).$promise.then(function(data){
+            Listing.find({filter:{where : {userId: $scope.getUserId(), descr: {like: '%'+$scope.search.searchKey+'%'}}, order:'id desc'}}).$promise.then(function(data){
                 $scope.myListings = data;
             });
         }
