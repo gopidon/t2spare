@@ -57,26 +57,29 @@
                                 <!-- Modal header bar -->
                                 <ion-header-bar class="bar-secondary">
                                     <h1 class="title">Add New Listing</h1>
-                                    <button class="button button-clear button-positive" ng-click="closeListingModal()">Cancel</button>
+                                    <button class="button button-positive" ng-click="closeListingModal()">
+                                        <i class="ion-close-round"></i>
+                                    </button>
                                 </ion-header-bar>
 
                                 <!-- Modal content area -->
                                 <ion-content>
 
                                     <form ng-submit="createListing(listing)">
-                                        <div class="list">
-                                            <label class="item item-input">
-                                                <textarea placeholder="Describe your listing" ng-model="listing.descr"></textarea>
+                                        <div class="list list-inset">
+                                            <label class="item item-input item-stacked-label">
+                                                <span class="input-label">Description</span>
+                                                <textarea placeholder="2 tickets to Batman" ng-model="listing.descr"></textarea>
                                             </label>
-                                        </div>
-                                        <div class="list">
-                                            <label class="item item-input">
-                                                <input type="text" placeholder="Start typing your location" ng-model="listing.location">
+
+                                            <label class="item item-input item-stacked-label">
+                                                <span class="input-label">Location</span>
+                                                <input type="text" placeholder="Century Cinemas, Mountain View, CA" ng-model="listing.location">
                                             </label>
-                                        </div>
-                                        <div class="list">
-                                            <label class="item item-input">
-                                                <input type="text" placeholder="Enter contact information" ng-model="listing.contact">
+
+                                            <label class="item item-input item-stacked-label">
+                                                <span class="input-label">Contact details</span>
+                                                <input type="text" placeholder="Enter phone, email or anything!" ng-model="listing.contact">
                                             </label>
                                         </div>
                                         <div class="padding">
