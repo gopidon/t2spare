@@ -2,6 +2,9 @@
     <button class="button button-icon" ng-click="addListing()">
         <i class="icon ion-plus"></i>
     </button>
+    <button class="button button-icon icon ion-ios7-minus"
+            ng-click="controls.showDelete = !controls.showDelete">
+    </button>
 </ion-nav-buttons>
 <ion-view title="My Listings">
   <ion-content class="has-header">
@@ -11,9 +14,16 @@
               <input type="text" placeholder="Search" ng-model="search.searchKey" ng-change="searchMyListingsByKey()">
           </label>
       </div>
-    <ion-list>
+    <ion-list show-delete="controls.showDelete">
       <ion-item ng-repeat="listing in myListings" type="item-text-wrap" href="#/tab/myListing/{{listing.id}}">
         {{listing.descr}}
+        <ion-option-button class="button-assertive"
+                             ng-click="editListing(listing.id)">
+              Edit
+        </ion-option-button>
+        <ion-delete-button class="ion-minus-circled"
+                             ng-click="deleteListing($index,listing.id)">
+        </ion-delete-button>
       </ion-item>
     </ion-list>
   </ion-content>

@@ -2,7 +2,7 @@
  * Created by gopi on 8/27/14.
  */
 angular.module('t2spare.listings',[])
-.controller('HomeCtrl',['$window','$rootScope','$scope','$state','$log','$ionicModal','$ionicSideMenuDelegate','$timeout','URLConstants','Listing','LocalStorage', function($window, $rootScope, $scope, $state, $log, $ionicModal,$ionicSideMenuDelegate, $timeout, URLConstants, Listing, LocalStorage){
+.controller('HomeCtrl',['$window','$rootScope','$scope','$state','$log','$ionicPopup','$ionicModal','$ionicSideMenuDelegate','$timeout','URLConstants','Listing','LocalStorage', function($window, $rootScope, $scope, $state, $log, $ionicPopup ,$ionicModal,$ionicSideMenuDelegate, $timeout, URLConstants, Listing, LocalStorage){
 
         var loginWindow, close, hasUserId, userId, accessToken, userStr, accessTokenStr;
         $scope.URLConstants = URLConstants;
@@ -11,6 +11,9 @@ angular.module('t2spare.listings',[])
         $scope.loginModal = null;
         $scope.listingModal = null;
         $scope.search = {};
+        $scope.controls = {
+            showDelete: false
+        };
 
         $scope.toggleSideMenu = function() {
             $ionicSideMenuDelegate.toggleLeft();
@@ -126,6 +129,27 @@ angular.module('t2spare.listings',[])
             });
         }
 
+        $scope.editListing = function(id){
+
+        }
+
+        $scope.deleteListing = function(index, id){
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete Listing?',
+                template: 'Are you sure you want to delete the listing?'
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    // Delete baby!
+                    Listing.delete({id: id}, function(data){
+                        $scope.myListings.splice(index,1);
+                    });
+                } else {
+                    // Let it be!
+                }
+            });
+
+        }
 
         $scope.authFB = function(){
             if(!$rootScope.inWeb){
