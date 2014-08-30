@@ -197,10 +197,38 @@ angular.module('t2spare.listings',[])
 
 
     }])
-    .controller('ListingDetailCtrl', ['$stateParams','$scope',
-        function($stateParams, $scope){
+    .controller('ListingDetailCtrl', ['$stateParams','$scope','LocalStorage','Listing',
+        function($stateParams, $scope, LocalStorage, Listing){
 
             $scope.listingId = $stateParams.listingId;
+            $scope.listing;
+            Listing.find({filter: {where: {id: $scope.listingId}}}, function(data){
+               console.log(data);
+               $scope.listing = data[0];
+            });
+
+            $scope.getUserId = function(){
+                var userId = LocalStorage.get("USERID");
+                if(userId == undefined){
+                    return -1;
+                }
+                else
+                {
+                    return userId;
+                }
+            }
+
+            $scope.getAuthenticated = function(){
+                var auth = LocalStorage.get("AUTHENTICATED");
+                if(auth){
+                    return true
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
 
 
     }]);
