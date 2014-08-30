@@ -197,9 +197,10 @@ angular.module('t2spare.listings',[])
 
 
     }])
-    .controller('MyListingsCtrl',['$scope', function($scope){
+    .controller('ListingDetailCtrl', ['$stateParams','$scope',
+        function($stateParams, $scope){
 
-    }])
-    .controller('MyListingDetailCtrl',['$scope', function($scope){
+            $scope.listingId = $stateParams.listingId;
 
-    }])
+
+    }]);

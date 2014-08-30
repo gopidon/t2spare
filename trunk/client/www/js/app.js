@@ -71,12 +71,15 @@ angular.module('t2spare', ['ionic', 't2spare.system', 't2spare.listings','t2spar
         }
       }
     })
-    .state('tab.myListing-detail', {
-      url: '/myListing/:myListingId',
+    .state('tab.myListingDetail', {
+      url: '/showListing/:listingId',
       views: {
         'tab-myListings': {
           templateUrl: 'templates/myListing-detail.html',
-          controller: 'MyListingDetailCtrl'
+          /*controller: function($stateParams){
+              console.log($stateParams.listingId)
+          }*/
+          controller: 'ListingDetailCtrl'
         }
       }
     });

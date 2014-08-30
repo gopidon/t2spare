@@ -15,7 +15,7 @@
           </label>
       </div>
     <ion-list show-delete="controls.showDelete">
-      <ion-item ng-repeat="listing in myListings" type="item-text-wrap" href="#/tab/myListing/{{listing.id}}">
+      <ion-item ng-repeat="listing in myListings" type="item-text-wrap" ng-href="#/tab/showListing/{{listing.id}}">
         {{listing.descr}}
         <ion-option-button class="button-assertive"
                              ng-click="editListing(listing.id)">
