@@ -12,7 +12,8 @@ angular.module('t2spare.listings',[])
         $scope.listingModal = null;
         $scope.search = {};
         $scope.controls = {
-            showDelete: false
+            showDelete: false,
+            showNavigation: true
         };
 
         $scope.toggleSideMenu = function() {
@@ -199,6 +200,8 @@ angular.module('t2spare.listings',[])
     }])
     .controller('ListingDetailCtrl', ['$stateParams','$scope','LocalStorage','Listing',
         function($stateParams, $scope, LocalStorage, Listing){
+
+
 
             $scope.listingId = $stateParams.listingId;
             $scope.listing;
