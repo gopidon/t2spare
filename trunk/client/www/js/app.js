@@ -71,8 +71,8 @@ angular.module('t2spare', ['ionic', 't2spare.system', 't2spare.listings','t2spar
         }
       }
     })
-    .state('tab.myListingDetail', {
-      url: '/showListing/:listingId',
+    .state('tab.myListingDetailEdit', {
+      url: '/myListings/showListing/:listingId',
       views: {
         'tab-myListings': {
           templateUrl: 'templates/myListing-detail.html',
@@ -82,7 +82,19 @@ angular.module('t2spare', ['ionic', 't2spare.system', 't2spare.listings','t2spar
           controller: 'ListingDetailCtrl'
         }
       }
-    });
+    })
+      .state('tab.myListingDetailView', {
+          url: '/home/showListing/:listingId',
+          views: {
+              'tab-home': {
+                  templateUrl: 'templates/myListing-detail.html',
+                  /*controller: function($stateParams){
+                   console.log($stateParams.listingId)
+                   }*/
+                  controller: 'ListingDetailCtrl'
+              }
+          }
+      })
 
 
 

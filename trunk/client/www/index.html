@@ -19,12 +19,14 @@
         <ion-side-menus>
               <!-- Left menu -->
               <ion-side-menu side="left">
-                  <ion-header-bar class="bar-positive">
-                      <h1 class="title">Menu</h1>
+                  <ion-header-bar class="bar-dark">
+                      <h1 class="title">T2Spare</h1>
                   </ion-header-bar>
                   <ion-content scroll="false">
                       <ion-list>
-                        <ion-item>1</ion-item>
+                        <ion-item item-type="item-icon-left"><i class="icon ion-earth"></i> Explore</ion-item>
+                        <ion-item item-type="item-icon-left" ng-show="true"><i class="icon ion-person"></i> Profile</ion-item>
+                        <ion-item item-type="item-icon-left" ng-show="true"><i class="icon ion-log-out"></i> Logout</ion-item>
                       </ion-list>
                   </ion-content>
               </ion-side-menu>
@@ -35,7 +37,7 @@
                     <ion-nav-bar class="bar-positive nav-title-slide-ios7">
                         <ion-nav-buttons side="left">
                             <ion-nav-back-button class="button-clear">
-                                <i class="ion-chevron-left"></i>
+                                <i class="icon ion-ios7-arrow-left"></i>Back
                             </ion-nav-back-button>
 
                         </ion-nav-buttons>
