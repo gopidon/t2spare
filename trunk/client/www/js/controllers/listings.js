@@ -2,7 +2,10 @@
  * Created by gopi on 8/27/14.
  */
 angular.module('t2spare.listings',[])
-.controller('HomeCtrl',['$window','$rootScope','$scope','$state','$log','$ionicPopup','$ionicModal','$ionicSideMenuDelegate','$timeout','URLConstants','Listing','LocalStorage', function($window, $rootScope, $scope, $state, $log, $ionicPopup ,$ionicModal,$ionicSideMenuDelegate, $timeout, URLConstants, Listing, LocalStorage){
+.controller('HomeCtrl',['$window','$rootScope','$scope','$state','$log',
+        '$ionicPopup','$ionicModal','$ionicSideMenuDelegate','$ionicLoading','$timeout','URLConstants','Listing','LocalStorage',
+        function($window, $rootScope, $scope, $state, $log,
+                 $ionicPopup ,$ionicModal,$ionicSideMenuDelegate,$ionicLoading, $timeout, URLConstants, Listing, LocalStorage){
 
         var loginWindow, close, hasUserId, userId, accessToken, userStr, accessTokenStr;
         $scope.URLConstants = URLConstants;
@@ -14,6 +17,23 @@ angular.module('t2spare.listings',[])
         $scope.controls = {
             showDelete: false,
             showNavigation: true
+        };
+
+        var loadOptions = {
+                content: '<i class=" ion-loading-c"></i>'+' Loading ....',
+                animation: 'fade-in',
+                showBackdrop: true,
+                maxWidth: 200,
+                showDelay: 0
+        }
+
+
+
+        $scope.show = function() {
+            $scope.loading = $ionicLoading.show(loadOptions);
+        };
+        $scope.hide = function(){
+            $ionicLoading.hide();
         };
 
         $scope.toggleSideMenu = function() {
@@ -66,13 +86,17 @@ angular.module('t2spare.listings',[])
         };
 
         //Fetch top listings
+        $scope.show();
         Listing.find({filter:{order: 'id desc', limit: 10}}).$promise.then(function(data){
            $scope.topListings = data;
+           $scope.hide();
         });
 
         $scope.searchTopListingsByKey = function(){
+            $scope.show();
             Listing.find({filter:{where : {descr: {like: '%'+$scope.search.searchKey+'%'}}, order: 'id desc', limit: 10}}).$promise.then(function(data){
                 $scope.topListings = data;
+                $scope.hide();
             });
         }
 
@@ -113,8 +137,10 @@ angular.module('t2spare.listings',[])
         $scope.onMyListingsTabSelected = function(){
             if($scope.getAuthenticated()){
                   // Load user listings
+                $scope.show();
                 Listing.find({filter:{where: {userId: $scope.getUserId()}, order:'id desc'}}).$promise.then(function(data){
                     $scope.myListings = data;
+                    $scope.hide();
                 });
             }
             else{
@@ -125,8 +151,10 @@ angular.module('t2spare.listings',[])
         }
 
         $scope.searchMyListingsByKey = function(){
+            $scope.show();
             Listing.find({filter:{where : {userId: $scope.getUserId(), descr: {like: '%'+$scope.search.searchKey+'%'}}, order:'id desc'}}).$promise.then(function(data){
                 $scope.myListings = data;
+                $scope.hide();
             });
         }
 
