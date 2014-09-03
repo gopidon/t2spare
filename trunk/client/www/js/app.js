@@ -5,23 +5,30 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('t2spare', ['ionic', 't2spare.system', 't2spare.listings','t2spare.values','lbServices'])
+angular.module('t2spare', ['ionic', 't2spare.system.services','t2spare.system.controllers', 't2spare.listings','t2spare.values','lbServices'])
 
-.run(function($ionicPlatform,$rootScope) {
+.run(function($ionicPlatform,$rootScope, $state, LocalStorage) {
   $rootScope.inWeb = true;
   $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if(window.cordova && window.cordova.plugins.Keyboard) {
+          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        }
+        if(window.StatusBar) {
+          // org.apache.cordova.statusbar required
+          StatusBar.styleDefault();
+        }
   });
 
-    })
+        $rootScope.$on('$stateChangeStart', function(event, toState) {
+            if (toState.name !== "login" && toState.name !== "logout" && !LocalStorage.get("AUTHENTICATED")) {
+                $state.go('login');
+                event.preventDefault();
+            }
+        });
+
+})
 
 .config(['$stateProvider','$urlRouterProvider','$logProvider',function($stateProvider, $urlRouterProvider, $logProvider) {
 
@@ -40,15 +47,13 @@ angular.module('t2spare', ['ionic', 't2spare.system', 't2spare.listings','t2spar
       templateUrl: "templates/tabs.html"
     })
 
-    .state('tab.login', {
+    .state('login', {
           url: '/login',
-          views: {
-              'tab-myListings': {
-                  templateUrl: 'templates/tab-login.html',
-                  controller: 'HomeCtrl'
-              }
-          }
-     })
+          templateUrl: 'templates/login.html',
+          controller: 'LoginCtrl'
+
+      }
+     )
 
     // Each tab has its own nav history stack:
 

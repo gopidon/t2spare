@@ -1,7 +1,7 @@
 /**
  * Created by gopi on 8/28/14.
  */
-angular.module('t2spare.system', [])
+angular.module('t2spare.system.services', [])
 
     .factory("Global", [
         function() {
