@@ -2,12 +2,14 @@
  * Created by gopi on 9/2/14.
  */
 angular.module('t2spare.system.controllers',[])
-    .controller('LoginCtrl',['$rootScope','$scope','$state','$timeout','URLConstants','LocalStorage',
-        function($rootScope, $scope, $state, $timeout, URLConstants, LocalStorage){
+    .controller('LoginCtrl',['$window','$rootScope','$scope','$state','$timeout','URLConstants','LocalStorage',
+        function($window, $rootScope, $scope, $state, $timeout, URLConstants, LocalStorage){
         var loginWindow, close, hasUserId, userId, accessToken, userStr, accessTokenStr;
         $scope.URLConstants = URLConstants;
         $scope.authFB = function(){
+            console.log("1");
             if(!$rootScope.inWeb){
+                console.log("2");
                 loginWindow = $window.open($scope.URLConstants.FBAuthURL,'_blank','location=yes');
                 loginWindow.addEventListener('loadstart', function(event){
                     console.log(event.url);
@@ -31,7 +33,7 @@ angular.module('t2spare.system.controllers',[])
                             LocalStorage.set("ACCESSTOKEN", accessToken);
 
                         });
-
+                        $state.go('tab.home');
                         loginWindow.close();
                     }
 

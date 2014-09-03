@@ -8,7 +8,7 @@
 angular.module('t2spare', ['ionic', 't2spare.system.services','t2spare.system.controllers', 't2spare.listings','t2spare.values','lbServices'])
 
 .run(function($ionicPlatform,$rootScope, $state, LocalStorage) {
-  $rootScope.inWeb = true;
+  $rootScope.inWeb = false;
   $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -24,6 +24,10 @@ angular.module('t2spare', ['ionic', 't2spare.system.services','t2spare.system.co
         $rootScope.$on('$stateChangeStart', function(event, toState) {
             if (toState.name !== "login" && toState.name !== "logout" && !LocalStorage.get("AUTHENTICATED")) {
                 $state.go('login');
+                event.preventDefault();
+            }
+            else if(toState.name == 'login' && LocalStorage.get("AUTHENTICATED")){
+                $state.go('tab.home');
                 event.preventDefault();
             }
         });
