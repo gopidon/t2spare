@@ -1,23 +1,26 @@
 /**
  * Created by gopi on 9/2/14.
  */
-angular.module('t2spare.system.controllers',[])
-    .controller('LoginCtrl',['$window','$rootScope','$scope','$state','$timeout','URLConstants','LocalStorage',
-        function($window, $rootScope, $scope, $state, $timeout, URLConstants, LocalStorage){
+angular.module('t2spare.system.controllers',['ngCookies'])
+    .controller('LoginCtrl',['$window','$http','$rootScope','$cookies','$scope','$state','$timeout','URLConstants','LocalStorage','User','UserIdentity',
+        function($window, $http, $rootScope, $cookies, $scope, $state, $timeout, URLConstants, LocalStorage, User, UserIdentity){
+
         var loginWindow, close, hasUserId, userId, accessToken, userStr, accessTokenStr;
         $scope.URLConstants = URLConstants;
+
+        console.log("Cookies:"+JSON.stringify($cookies));
+
         $scope.authFB = function(){
-            console.log("1");
+
             if(!$rootScope.inWeb){
-                console.log("2");
                 loginWindow = $window.open($scope.URLConstants.FBAuthURL,'_blank','location=yes');
                 loginWindow.addEventListener('loadstart', function(event){
                     console.log(event.url);
-                    close = event.url.indexOf("blank.html");
-                    hasUserId = event.url.indexOf("userId");
-                    console.log("Has UserId:"+hasUserId);
-                    if(close > -1 && hasUserId > -1){
-                        userId = event.url.match('userId=[^&]*');
+                    close = event.url.indexOf("loginSuccess");
+                    //hasUserId = event.url.indexOf("userId");
+                    console.log("Close:"+close);
+                    if(close > -1){
+                       /* userId = event.url.match('userId=[^&]*');
                         accessToken = event.url.match('accessToken=[^#]*');
                         userStr = userId[0];
                         accessTokenStr = accessToken[0];
@@ -25,16 +28,25 @@ angular.module('t2spare.system.controllers',[])
                         //console.log(userStr);
                         //console.log(accessTokenStr);
                         //console.log(userId);
-                        accessToken = accessTokenStr.substring(accessTokenStr.indexOf('=')+1, accessTokenStr.length);
+                        accessToken = accessTokenStr.substring(accessTokenStr.indexOf('=')+1, accessTokenStr.length);*/
+                        //$http.defaults.headers.common['Authorization']  = 'O71YauoXlntGZRKHpxHSJPn1sRJfuHMM6hUJEpOvGKen9PpbDYGVrqPdUt5QzJsG';
                         //console.log(accessToken);
-                        $scope.$apply(function(){
-                            LocalStorage.set("AUTHENTICATED", true);
-                            LocalStorage.set("USERID", userId);
-                            LocalStorage.set("ACCESSTOKEN", accessToken);
+                        loginWindow.executeScript(
+                            { code: "document.body.innerHTML" },
+                            function( values ) {
+                                console.log("Values:");
+                                $scope.$apply(function(){
+                                    LocalStorage.set("AUTHENTICATED", true);
+                                    //LocalStorage.set("ACCESSTOKEN", accessToken);
+                                    LocalStorage.set("USER",values[0]);
 
-                        });
-                        $state.go('tab.home');
-                        loginWindow.close();
+                                });
+                                $state.go('tab.home');
+                                loginWindow.close();
+
+                            }
+                        );
+
                     }
 
 
@@ -45,6 +57,7 @@ angular.module('t2spare.system.controllers',[])
                     LocalStorage.set("AUTHENTICATED", true);
                     LocalStorage.set("USERID", 1);
                     LocalStorage.set("ACCESSTOKEN", '');
+
                     $state.go('tab.home');
                 });
             }

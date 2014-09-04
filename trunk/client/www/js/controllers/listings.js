@@ -51,6 +51,11 @@ angular.module('t2spare.listings',[])
             }
         }
 
+
+        $scope.user = LocalStorage.getObject("USER");
+
+
+
         $scope.getAuthenticated = function(){
             var auth = LocalStorage.get("AUTHENTICATED");
             if(auth){

@@ -13,14 +13,14 @@
     -->
 
 
-   <script src="http://192.168.43.238:8080/target/target-script-min.js#anonymous"></script> -->
+  <!--<script src="http://192.168.43.238:8080/target/target-script-min.js#anonymous"></script>-->
   </head>
   <body ng-app="t2spare" ng-controller="HomeCtrl" animation="slide-left-right-ios7">
         <ion-side-menus>
               <!-- Left menu -->
               <ion-side-menu side="left">
                   <ion-header-bar class="bar-dark">
-                      <h1 class="title">T2Spare</h1>
+                      <h1 class="title">Hello {{user.profiles[0].profile.displayName}}</h1>
                   </ion-header-bar>
                   <ion-content scroll="false">
                       <ion-list>
@@ -131,6 +131,7 @@
         <!-- ionic/angularjs js -->
         <script src="lib/ionic/js/ionic.bundle.js"></script>
         <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
+        <script src="lib/ionic/js/angular/angular-cookies.min.js"></script>
 
 
         <!-- cordova script (this will be a 404 during development) -->
