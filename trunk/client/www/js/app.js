@@ -108,7 +108,7 @@ angular.module('t2spare', ['ionic', 't2spare.system.services','t2spare.system.co
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/home');
+  $urlRouterProvider.otherwise('/login');
 
 }]);
 

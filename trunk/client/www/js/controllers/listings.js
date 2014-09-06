@@ -40,19 +40,25 @@ angular.module('t2spare.listings',[])
             $ionicSideMenuDelegate.toggleLeft();
         };
 
+        $scope.getUser = function(){
+            return LocalStorage.get("USER");
+        }
+
+        $scope.getDisplayName = function(){
+            var user = $scope.getUser();
+            user = JSON.parse(user);
+            return user.displayName;
+         }
+
+
         $scope.getUserId = function(){
-            var userId = LocalStorage.get("USERID");
-            if(userId == undefined){
-                return -1;
-            }
-            else
-            {
-                return userId;
-            }
+            var user = $scope.getUser();
+            user = JSON.parse(user);
+            return user.id;
         }
 
 
-        $scope.user = LocalStorage.getObject("USER");
+
 
 
 
@@ -149,6 +155,7 @@ angular.module('t2spare.listings',[])
                 });
             }
             else{
+                //alert("No data");
                 //$state.go('tab.home');
                 //$scope.loginModal.show();
 

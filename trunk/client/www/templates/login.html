@@ -1,16 +1,13 @@
-<ion-view title="Login">
+<ion-view title="Login" style="background: #1b5a83">
     <ion-content class="has-header padding">
-        <button class="button button-block button-positive" ng-click="authFB()">
-            <i class="ion-social-facebook"></i>
-            Facebook
-        </button>
-        <button class="button button-block button-positive">
-            <i class="ion-social-google"></i>
-            Google
-        </button>
-        <button class="button button-block button-positive">
-            <i class="ion-social-twitter"></i>
-            Twitter
-        </button>
+        <div class="list list-inset"  style="background: #1b5a83">
+            <div class="item item-image" style="border:none;margin-top:50px;">
+                <img src="img/login.jpg"/>
+            </div>
+            <button class="button button-block button-light" ng-click="authFB()">
+                <i class="ion-social-facebook"></i>
+                Facebook
+            </button>
+        </div>
     </ion-content>
 </ion-view>

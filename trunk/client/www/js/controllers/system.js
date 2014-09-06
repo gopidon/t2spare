@@ -1,14 +1,13 @@
 /**
  * Created by gopi on 9/2/14.
  */
-angular.module('t2spare.system.controllers',['ngCookies'])
-    .controller('LoginCtrl',['$window','$http','$rootScope','$cookies','$scope','$state','$timeout','URLConstants','LocalStorage','User','UserIdentity',
-        function($window, $http, $rootScope, $cookies, $scope, $state, $timeout, URLConstants, LocalStorage, User, UserIdentity){
+angular.module('t2spare.system.controllers',[])
+    .controller('LoginCtrl',['$window','$http','$rootScope','$scope','$state','$timeout','URLConstants','LocalStorage','User','UserIdentity',
+        function($window, $http, $rootScope, $scope, $state, $timeout, URLConstants, LocalStorage, User, UserIdentity){
 
         var loginWindow, close, hasUserId, userId, accessToken, userStr, accessTokenStr;
         $scope.URLConstants = URLConstants;
 
-        console.log("Cookies:"+JSON.stringify($cookies));
 
         $scope.authFB = function(){
 
@@ -32,13 +31,15 @@ angular.module('t2spare.system.controllers',['ngCookies'])
                         //$http.defaults.headers.common['Authorization']  = 'O71YauoXlntGZRKHpxHSJPn1sRJfuHMM6hUJEpOvGKen9PpbDYGVrqPdUt5QzJsG';
                         //console.log(accessToken);
                         loginWindow.executeScript(
-                            { code: "document.body.innerHTML" },
+                            { code: "document.getElementById('user').innerHTML" },
                             function( values ) {
                                 console.log("Values:");
                                 $scope.$apply(function(){
                                     LocalStorage.set("AUTHENTICATED", true);
-                                    //LocalStorage.set("ACCESSTOKEN", accessToken);
+                                    console.log(values[0]);
+                                    console.log(typeof values[0]);
                                     LocalStorage.set("USER",values[0]);
+
 
                                 });
                                 $state.go('tab.home');

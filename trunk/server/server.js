@@ -60,12 +60,23 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 app.get('/auth/loginSuccess', function(req, res, next) {
     console.log("In auth/loginSuccess");
     var user = req.user;
+    var myUser = {};
+
+
+
+    myUser.id = user.id;
+    myUser.displayName = user.profiles[0].profile.displayName;
+    myUser.fbToken = user.profiles[0].credentials.accessToken;
+
+
+
     var access_token = req.signedCookies.access_token;
-    user.accessToken = access_token;
+    myUser.accessToken = access_token;
     console.log("Access Token:"+access_token);
-    console.log("User:"+JSON.stringify(req.user));
+
+    console.log("User:"+JSON.stringify(myUser));
     //res.redirect('http://localhost:63342/strongloop/t2spare/trunk/client/www/index.html#/tab/dash');
-    res.render('loginSuccess',{user: req.user});
+    res.render('loginSuccess',{user: myUser});
     //res.redirect('?userId='+req.user.id);
     //res.redirect("https://www.facebook.com/connect/blank.html?userId="+req.user.id+'&accessToken='+access_token);
     //res.cookie("user",JSON.stringify(req.user));
