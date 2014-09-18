@@ -17,7 +17,7 @@
           </label>
       </div>
       <ion-list>
-          <ion-item ng-repeat="listing in topListings" ng-href="#/tab/home/showListing/{{listing.id}}" class="item item-text-wrap item-icon-right">
+          <ion-item ng-repeat="listing in topListings" ng-href="#/tab/home/showListing/{{listing.id}}" class="item item-text-wrap item-icon-right" ui-sref="tab.myListingDetailView({listingId: {{listing.id}}})">
               {{listing.descr}}
               <i class="icon ion-chevron-right" style="color:#ccc; font-size:16px;"></i>
           </ion-item>

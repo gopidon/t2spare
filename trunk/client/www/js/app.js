@@ -22,14 +22,28 @@ angular.module('t2spare', ['ionic', 't2spare.system.services','t2spare.system.co
   });
 
         $rootScope.$on('$stateChangeStart', function(event, toState) {
-            if (toState.name !== "login" && toState.name !== "logout" && !LocalStorage.get("AUTHENTICATED")) {
+            var auth = LocalStorage.get("AUTHENTICATED");
+            if(auth == undefined || auth == "false"){
+                auth = false;
+            }
+            else{
+                auth = true;
+            }
+            console.log(toState.name);
+            console.log(auth);
+            if (toState.name !== "login" && toState.name !== "logout" && !auth) {
                 $state.go('login');
                 event.preventDefault();
             }
-            else if(toState.name == 'login' && LocalStorage.get("AUTHENTICATED")){
+            else if(toState.name == 'login' && auth){
                 $state.go('tab.home');
                 event.preventDefault();
             }
+            else if(toState.name == 'login' && !auth){
+                //$state.go('login');
+                //event.preventDefault();
+            }
+
         });
 
 })

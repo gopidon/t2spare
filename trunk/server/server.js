@@ -62,13 +62,9 @@ app.get('/auth/loginSuccess', function(req, res, next) {
     var user = req.user;
     var myUser = {};
 
-
-
     myUser.id = user.id;
     myUser.displayName = user.profiles[0].profile.displayName;
     myUser.fbToken = user.profiles[0].credentials.accessToken;
-
-
 
     var access_token = req.signedCookies.access_token;
     myUser.accessToken = access_token;
@@ -81,6 +77,12 @@ app.get('/auth/loginSuccess', function(req, res, next) {
     //res.redirect("https://www.facebook.com/connect/blank.html?userId="+req.user.id+'&accessToken='+access_token);
     //res.cookie("user",JSON.stringify(req.user));
     //res.redirect("http://192.168.2.80:3000/blank.html?userId="+req.user.id+'&accessToken='+access_token);
+});
+
+app.get('/auth/logout', function(req,res,next){
+   console.log("In AUTH/LOGOUT");
+   req.logout();
+   res.send("Hello");
 });
 
 

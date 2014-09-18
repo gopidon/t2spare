@@ -20,7 +20,7 @@
           </label>
       </div>
     <ion-list show-delete="controls.showDelete">
-      <ion-item ng-repeat="listing in myListings" class="item item-text-wrap item-icon-right" type="item-text-wrap" ng-href="#/tab/myListings/showListing/{{listing.id}}">
+      <ion-item ng-repeat="listing in myListings" class="item item-text-wrap item-icon-right" type="item-text-wrap" ui-sref="tab.myListingDetailEdit({listingId: {{listing.id}}})">
         {{listing.descr}}
         <i class="icon ion-chevron-right" style="color:#ccc; font-size:16px;"></i>
         <ion-delete-button class="ion-minus-circled"

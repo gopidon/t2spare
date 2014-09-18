@@ -28,18 +28,27 @@ angular.module('t2spare.system.controllers',[])
                         //console.log(accessTokenStr);
                         //console.log(userId);
                         accessToken = accessTokenStr.substring(accessTokenStr.indexOf('=')+1, accessTokenStr.length);*/
-                        //$http.defaults.headers.common['Authorization']  = 'O71YauoXlntGZRKHpxHSJPn1sRJfuHMM6hUJEpOvGKen9PpbDYGVrqPdUt5QzJsG';
+
                         //console.log(accessToken);
                         loginWindow.executeScript(
                             { code: "document.getElementById('user').innerHTML" },
                             function( values ) {
                                 console.log("Values:");
+                                console.log(values[0]);
+                                var accessToken
+                                var type = typeof values[0];
+                                if(type=="string") {
+                                    accessToken = JSON.parse(values[0])['accessToken'];
+                                }
+                                else{
+                                    accessToken = values[0]['accessToken'];
+                                }
+                                console.log(accessToken);
                                 $scope.$apply(function(){
-                                    LocalStorage.set("AUTHENTICATED", true);
-                                    console.log(values[0]);
-                                    console.log(typeof values[0]);
-                                    LocalStorage.set("USER",values[0]);
+                                    LocalStorage.set("AUTHENTICATED", "true");
 
+                                    LocalStorage.set("USER",values[0]);
+                                    $http.defaults.headers.common['Authorization']  = accessToken;
 
                                 });
                                 $state.go('tab.home');
@@ -55,10 +64,9 @@ angular.module('t2spare.system.controllers',[])
             }
             else{
                 $timeout(function(){
-                    LocalStorage.set("AUTHENTICATED", true);
-                    LocalStorage.set("USERID", 1);
-                    LocalStorage.set("ACCESSTOKEN", '');
-
+                    LocalStorage.set("AUTHENTICATED", "true");
+                    //$http.defaults.headers.common['Authorization']  = 'VuVtul1eJxPY7f7IcmHJBjlPSZdoSnQEQCyEDSWutbj1wAXFuE9fZkJQKrHacWmE';
+                    LocalStorage.set("USER", '{"id": 1, "displayName": "Gopi", "accessToken":"K3bAeOH3RexZWw65RsM7duNLh1BUOFtUj1b4vWTZD0UefB2D2r7NUpsH1wuQdCJh"}');
                     $state.go('tab.home');
                 });
             }

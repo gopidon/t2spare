@@ -2,10 +2,10 @@
  * Created by gopi on 8/27/14.
  */
 angular.module('t2spare.listings',[])
-.controller('HomeCtrl',['$window','$rootScope','$scope','$state','$log',
-        '$ionicPopup','$ionicModal','$ionicSideMenuDelegate','$ionicLoading','$timeout','URLConstants','Listing','LocalStorage',
-        function($window, $rootScope, $scope, $state, $log,
-                 $ionicPopup ,$ionicModal,$ionicSideMenuDelegate,$ionicLoading, $timeout, URLConstants, Listing, LocalStorage){
+.controller('HomeCtrl',['$window','$http','$rootScope','$scope','$state','$log',
+        '$ionicPopup','$ionicModal','$ionicSideMenuDelegate','$ionicLoading','$timeout','URLConstants','Listing','User','LocalStorage',
+        function($window, $http, $rootScope, $scope, $state, $log,
+                 $ionicPopup ,$ionicModal,$ionicSideMenuDelegate,$ionicLoading, $timeout, URLConstants, Listing, User, LocalStorage){
 
 
         $scope.URLConstants = URLConstants;
@@ -46,31 +46,68 @@ angular.module('t2spare.listings',[])
 
         $scope.getDisplayName = function(){
             var user = $scope.getUser();
-            user = JSON.parse(user);
-            return user.displayName;
+            if(user!=undefined){
+                user = JSON.parse(user);
+                //console.log(user);
+                return user.displayName;
+            }
+            else{
+                return "";
+            }
+
          }
 
 
         $scope.getUserId = function(){
             var user = $scope.getUser();
-            user = JSON.parse(user);
-            return user.id;
+            if(user!= undefined){
+                user = JSON.parse(user);
+                return user.id;
+            }
+            else{
+                return -1;
+            }
+
         }
 
+        $scope.getAccessToken = function(){
+                var user = $scope.getUser();
+                if(user!= undefined){
+                    user = JSON.parse(user);
+                    return user.accessToken;
+                }
+                else{
+                    return "-1";
+                }
 
-
-
+        }
 
 
         $scope.getAuthenticated = function(){
             var auth = LocalStorage.get("AUTHENTICATED");
-            if(auth){
+            if(auth=="true"){
                 return true
             }
             else
             {
                 return false;
             }
+        }
+
+        $scope.logout = function(){
+            $http.defaults.headers.common['Authorization']  = $scope.getAccessToken();
+            User.logout(function(response){
+
+                    //clean up local storage
+                    LocalStorage.set("AUTHENTICATED", "false");
+                    LocalStorage.setObject("USER", "");
+                    $scope.toggleSideMenu();
+                    $state.go("login");
+
+
+            });
+
+
         }
 
         // Create modals
@@ -126,8 +163,7 @@ angular.module('t2spare.listings',[])
 
         $scope.createListing = function(listing){
             var newListing = {};
-            var userId = LocalStorage.get("USERID", -1);
-            userId = parseInt(userId);
+            var userId = $scope.getUserId();
             $log.debug("createListing::Fetched userId:"+userId);
 
             newListing.descr = listing.descr;
